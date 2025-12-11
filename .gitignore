@@ -1,0 +1,30 @@
+# --- Python 基本設定 ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- 虛擬環境 (Virtual Environment) ---
+# 視你的習慣，可能會是以下名稱
+venv/
+.venv/
+env/
+.env_folder/
+
+# --- 環境變數與機密資料 (最重要！) ---
+.env
+.env.local
+
+# --- 資料庫檔案 ---
+# 我們不需要把 ChromaDB 的實體資料庫檔案上傳
+# 因為它可以透過 data_model.py 重新生成
+chroma_db/
+*.db
+*.sqlite3
+
+# --- IDE 設定檔 (不需要上傳個人的編輯器設定) ---
+.vscode/
+.idea/
+
+# --- 作業系統產生的檔案 ---
+.DS_Store
+Thumbs.db
