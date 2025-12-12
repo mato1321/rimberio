@@ -1,6 +1,6 @@
 # 🐾 RIMBERIO - AI 寵物適性媒合系統
 
-![Python](https://img.shields.io/badge/Python-3.12-blue? style=flat-square&logo=python)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-3670A0? style=flat-square&logo=python&logoColor=ffdd54)](https://www.python.org/)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.124.2-009485?style=flat-square&logo=fastapi)
 ![LINE Bot](https://img.shields.io/badge/LINE-Bot%20SDK-00B900?style=flat-square&logo=line)
 ![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20DB-green?style=flat-square)
@@ -10,91 +10,16 @@
 
 ---
 
-## 核心特色
+## 📌 核心特色
 
 | 特色 | 說明 |
 |------|------|
-|  **AI 推薦引擎** | 向量空間模型 (VSM) + ChromaDB 向量相似度計算，精準媒合飼主與寵物 |
-|  **LINE 即時互動** | 無需下載 App，透過 LINE 聊天直接進行適性評估 |
-|  **6 維特徵分析** | 活動力、親人程度、獨立性、空間需求、掉毛程度、吵鬧程度 |
-|  **多輪對話流程** | 6 道情境化問題，漸進式建構用戶偏好向量 |
-|  **安全配置** | 環境變數管理，無需暴露敏感資訊 |
-|  **高效非同步** | FastAPI + Uvicorn，支援高並發請求 |
-
----
-
-## 🏗️ 系統架構
-
-```
-┌─────────────────────────────────────────────────────┐
-│                  LINE 用戶                          │
-│            (掃描 QR Code 加入機器人)                 │
-└────────────────────┬────────────────────────────────┘
-                     │ LINE Messaging API
-                     ▼
-┌─────────────────────────────────────────────────────┐
-│  Ngrok (Public HTTPS Tunnel - https://xxxx.app)    │
-│            (本機開發環境→公網橋梁)                   │
-└────────────────────┬────────────────────────────────┘
-                     │ POST /callback
-                     ▼
-┌─────────────────────────────────────────────────────┐
-│          FastAPI Web Server (Port 8000)             │
-│                  (main.py)                          │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  • WebhookHandler 事件路由                    │  │
-│  │  • MessageEvent 處理 (啟動測驗)               │  │
-│  │  • PostbackEvent 處理 (回答問題)              │  │
-│  │  • user_sessions 記憶體管理                  │  │
-│  └──────────────────────────────────────────────┘  │
-└────────────────────┬────────────────────────────────┘
-                     │ 向量化查詢
-                     ▼
-┌─────────────────────────────────────────────────────┐
-│     Data Model Layer (data_model.py)                │
-│  ┌──────────────────────────────────────────────┐  │
-│  │  DIMENSIONS:  [Activity, Affection, ...]      │  │
-│  │  QUESTIONS: 6 道適性評估題                    │  │
-│  │  PET_DB: 5 隻寵物 (向量表示)                  │  │
-│  │  ChromaDB: 向量數據庫 (Euclidean Distance) │  │
-│  └──────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────┘
-                     │ 推薦結果
-                     ▼
-┌─────────────────────────────────────────────────────┐
-│  推薦回覆 (Flex Message / Text Message)             │
-│  • 排序前 3 名寵物候選                              │
-│  • 速配指數 (0-100%)                               │
-│  • 寵物特性說明                                     │
-└─────────────────────────────────────────────────────┘
-```
-
----
-
-## 📂 專案目錄結構
-
-```
-rimberio/
-├── . env                          # 🔐 環境變數 (LINE Token & Secret)
-├── .gitignore                    # Git 忽略設定
-├── main.py                       # 🚀 FastAPI 主程式 (6. 3 KB)
-│   ├── FastAPI 應用初始化
-│   ├── LINE WebhookHandler 路由
-│   ├── 文字訊息事件處理 (啟動測驗邏輯)
-│   ├── Postback 事件處理 (問卷回答邏輯)
-│   ├── send_question() - 發送題目函式
-│   └── show_recommendation() - 顯示推薦結果函式
-│
-├── data_model.py                 # 📊 數據模型 & 向量DB (5.2 KB)
-│   ├── DIMENSIONS[] - 6 維特徵定義
-│   ├── PET_DB[] - 5 隻寵物資料 (帶向量表示)
-│   ├── QUESTIONS[] - 6 道問卷題目
-│   └── ChromaDB 初始化 & get_recommendations()
-│
-├── requirements.txt              # 📦 依賴套件清單 (104 個套件)
-│
-└── venv/                         # 虛擬環境資料夾 (首次運行時建立)
-```
+| 🤖 **AI 推薦引擎** | 向量空間模型 (VSM) + ChromaDB 向量相似度計算，精準媒合飼主與寵物 |
+| 💬 **LINE 即時互動** | 無需下載 App，透過 LINE 聊天直接進行適性評估 |
+| 🎯 **6 維特徵分析** | 活動力、親人程度、獨立性、空間需求、掉毛程度、吵鬧程度 |
+| 📊 **多輪對話流程** | 6 道情境化問題，漸進式建構用戶偏好向量 |
+| 🔐 **安全配置** | 環境變數管理，無需暴露敏感資訊 |
+| ⚡ **高效非同步** | FastAPI + Uvicorn，支援高並發請求 |
 
 ---
 
@@ -293,7 +218,7 @@ Session Status                online
 Session Expires               1 hour, 59 minutes
 Version                       3.0.0
 Region                        Tokyo (jp)
-Forwarding                    https://xxxx-xxxx.ngrok-free.app -> http://localhost:8000
+Forwarding                    https://xxxx-xxxx. ngrok-free.app -> http://localhost:8000
 Forwarding                    http://xxxx-xxxx.ngrok-free.app -> http://localhost:8000
 ```
 
@@ -422,7 +347,7 @@ match_score = max(0, (1 - distance) × 100%)
 ```python
 # 事件驅動流程
 1. LINE 使用者傳送訊息
-   └─> 2.  Ngrok 轉發到 /callback 端點
+   └─> 2.   Ngrok 轉發到 /callback 端點
        └─> 3. handler. handle() 解析簽名與事件
            └─> 4. @handler.add() 路由分發
                ├─> MessageEvent (啟動測驗)
@@ -430,8 +355,8 @@ match_score = max(0, (1 - distance) × 100%)
                └─> PostbackEvent (回答題目)
                    └─> 更新 user_sessions[user_id]['vector']
                    └─> 判斷是否還有題目
-                       ├─> YES:  send_question() 發送下一題
-                       └─> NO: show_recommendation() 推薦寵物
+                       ├─> YES:   send_question() 發送下一題
+                       └─> NO:  show_recommendation() 推薦寵物
 ```
 
 ---
@@ -466,6 +391,113 @@ LINE 整合層
 
 ---
 
+## 🏗️ 系統架構
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  LINE 用戶                          │
+│            (掃描 QR Code 加入機器人)                 │
+└────────────────────┬────────────────────────────────┘
+                     │ LINE Messaging API
+                     ▼
+┌─────────────────────────────────────────────────────┐
+│  Ngrok (Public HTTPS Tunnel - https://xxxx.app)    │
+│            (本機開發環境→公網橋梁)                   │
+└────────────────────┬────────────────────────────────┘
+                     │ POST /callback
+                     ▼
+┌─────────────────────────────────────────────────────┐
+│          FastAPI Web Server (Port 8000)             │
+│                  (main.py)                          │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  • WebhookHandler 事件路由                    │  │
+│  │  • MessageEvent 處理 (啟動測驗)               │  │
+│  │  • PostbackEvent 處理 (回答問題)              │  │
+│  │  • user_sessions 記憶體管理                  │  │
+│  └──────────────────────────────────────────────┘  │
+└────────────────────┬────────────────────────────────┘
+                     │ 向量化查詢
+                     ▼
+┌─────────────────────────────────────────────────────┐
+│     Data Model Layer (data_model.py)                │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  DIMENSIONS:  [Activity, Affection, ...]      │  │
+│  │  QUESTIONS:  6 道適性評估題                    │  │
+│  │  PET_DB: 5 隻寵物 (向量表示)                  │  │
+│  │  ChromaDB: 向量數據庫 (Euclidean Distance) │  │
+│  └──────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────┘
+                     │ 推薦結果
+                     ▼
+┌─────────────────────────────────────────────────────┐
+│  推薦回覆 (Flex Message / Text Message)             │
+│  • 排序前 3 名寵物候選                              │
+│  • 速配指數 (0-100%)                               │
+│  • 寵物特性說明                                     │
+└─────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📂 專案目錄結構
+
+```
+rimberio/
+├── .  env                          # 🔐 環境變數 (LINE Token & Secret)
+├── .gitignore                    # Git 忽略設定
+├── main.py                       # 🚀 FastAPI 主程式 (6. 3 KB)
+│   ├── FastAPI 應用初始化
+│   ├── LINE WebhookHandler 路由
+│   ├── 文字訊息事件處理 (啟動測驗邏輯)
+│   ├── Postback 事件處理 (問卷回答邏輯)
+│   ├── send_question() - 發送題目函式
+│   └── show_recommendation() - 顯示推薦結果函式
+│
+├── data_model.py                 # 📊 數據模型 & 向量DB (5.2 KB)
+│   ├── DIMENSIONS[] - 6 維特徵定義
+│   ├── PET_DB[] - 5 隻寵物資料 (帶向量表示)
+│   ├── QUESTIONS[] - 6 道問卷題目
+│   └── ChromaDB 初始化 & get_recommendations()
+│
+├── requirements. txt              # 📦 依賴套件清單 (104 個套件)
+│
+└── venv/                         # 虛擬環境資料夾 (首次運行時建立)
+```
+
+---
+
+## 📬 聯絡方式
+
+- 📧 **Email**: mato1321@example.com
+- 🐙 **GitHub**: [@mato1321](https://github.com/mato1321)
+- 💬 **Issues**: 如有任何問題，歡迎在 [GitHub Issues](https://github.com/mato1321/rimberio/issues) 中提出
+
+---
+
+## 📄 開源授權
+
+本專案採用 **MIT License**，你可以自由地使用、複製、修改本專案。詳見 [LICENSE](LICENSE) 檔案。
+
+---
+
+## 📝 更新日誌 (Changelog)
+
+### v1.0.0 (2025-12-12)
+- ✅ 初始版本發佈
+- ✅ 6 維特徵空間設計完成
+- ✅ 5 隻寵物資料庫建立
+- ✅ 向量相似度匹配演算法實現
+- ✅ LINE Chatbot 基礎功能完成
+- ✅ Ngrok + Webhook 整合完成
+
+### 待開發
+- ⏳ Flex Message 卡片式 UI
+- ⏳ 使用者持久化儲存
+- ⏳ 推薦統計分析功能
+- ⏳ LLM 智慧建議整合
+
+---
+
 ## 🛠️ 常見問題 (FAQ)
 
 ### Q1: 機器人無法收到訊息？
@@ -481,8 +513,8 @@ LINE 整合層
 ### Q2: 向量初始化失敗？
 
 ```python
-# 錯誤:  KeyError: 'description'
-# 正確: KeyError 應該改為 'desc'
+# 錯誤:   KeyError: 'description'
+# 正確:  應該改為 'desc'
 ```
 
 在 `data_model.py` 中，確認寵物資料字段名為 `desc` 而非 `description`。
@@ -520,23 +552,10 @@ ChromaDB 會自動納入查詢。
     "options": [
         {"label": "選項 A", "value": 0.2, "text": "回覆文本"},
         {"label": "選項 B", "value": 0.5, "text": "回覆文本"},
-        {"label": "選項 C", "value": 0.9, "text": "回覆文本"}
+        {"label":  "選項 C", "value": 0.9, "text": "回覆文本"}
     ]
 }
 ```
-
----
-
-## 📈 進階功能規劃
-
-| 功能 | 優先級 | 說明 |
-|------|--------|------|
-| 🎨 Flex Message UI | ⭐⭐⭐ | 將純文字結果升級為圖文並茂的卡片式介面 |
-| 💾 持久化 Session | ⭐⭐⭐ | 使用 Redis/MongoDB 儲存使用者進度 |
-| 📊 推薦統計分析 | ⭐⭐ | 記錄推薦結果，分析最受歡迎的寵物配對 |
-| 🔐 使用者帳號系統 | ⭐⭐ | 支援歷史記錄、偏好保存等功能 |
-| 🌐 多語言支援 | ⭐ | 英文、日文、繁簡中文版本 |
-| 🤖 LLM 整合 | ⭐ | 結合 GPT / Claude 生成個性化建議 |
 
 ---
 
@@ -558,28 +577,6 @@ ChromaDB 會自動納入查詢。
 
 ---
 
-## 📄 開源授權
-
-本專案採用 **MIT License**，詳見 [LICENSE](LICENSE) 檔案。
-
-你可以自由地：
-- ✅ 使用、複製、修改本專案
-- ✅ 用於商業或個人用途
-- ✅ 發佈修改後的版本
-
-唯一的要求是：
-- 📝 保留原始授權聲明與版權資訊
-
----
-
-## 📬 聯絡方式
-
-- 📧 **Email**: mato1321@example.com (如有)
-- 🐙 **GitHub**:  [@mato1321](https://github.com/mato1321)
-- 💬 **Issues**: 如有任何問題，歡迎在 GitHub Issues 中提出
-
----
-
 ## 🙏 致謝
 
 感謝以下開源專案與社群的支持：
@@ -588,24 +585,6 @@ ChromaDB 會自動納入查詢。
 - [LINE Messaging API](https://developers.line.biz/) - 企業級聊天介面
 - [ChromaDB](https://www.trychroma.com/) - 向量資料庫
 - [Ngrok](https://ngrok.com/) - 本地開發隧道工具
-
----
-
-## 📝 更新日誌 (Changelog)
-
-### v1.0.0 (2025-12-12)
-- ✅ 初始版本發佈
-- ✅ 6 維特徵空間設計完成
-- ✅ 5 隻寵物資料庫建立
-- ✅ 向量相似度匹配演算法實現
-- ✅ LINE Chatbot 基礎功能完成
-- ✅ Ngrok + Webhook 整合完成
-
-### 待開發
-- ⏳ Flex Message 卡片式 UI
-- ⏳ 使用者持久化儲存
-- ⏳ 推薦統計分析功能
-- ⏳ LLM 智慧建議整合
 
 ---
 
