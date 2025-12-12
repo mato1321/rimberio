@@ -1,69 +1,210 @@
-🐾 RIMBERIO - Pet Matching Recommendation SystemRIMBERIO is a smart adoption consultant based on the LINE Chatbot. By combining vector space algorithms with the ChromaDB vector database and utilizing a "6-Dimensional Compatibility Matching Model," it precisely recommends the most suitable pets for owners, aiming to reduce return rates after adoption.Core FeaturesFeatureDescriptionRecommendation EngineVector Space Model (VSM) + ChromaDB vector similarity calculation to accurately match owners and petsReal-time LINE InteractionNo App download required; conduct compatibility assessments directly via LINE chat6-Dimensional AnalysisActivity, Affection, Independence, Space Needs, Grooming, Noise LevelMulti-turn Conversation6 contextualized questions to progressively build the user preference vector6-Dimensional Feature Space DesignRIMBERIO defines "Owner-Pet Compatibility" within a 6-dimensional vector space, where each dimension ranges from [0.0 ~ 1.0]:Dim IDFeature NameDescriptionLow Value (0.0)High Value (1.0)0ActivityEnergy LevelHomebodyFitness Enthusiast1AffectionClinginessLonerVelcro Pet2IndependenceIndependencePlenty of timeFrequently out3SpaceSpace NeedsStudio AptLarge Yard4GroomingShedding LevelHypoallergenicHeavy Shedder5NoiseVocal LevelQuiet as a mouseLoud/VocalPet Characteristic Vector ExamplesPet NameActivityAffectionIndependenceSpaceGroomingNoiseSuitable OwnerBorder Collie1.00.60.30.90.80.7Active outdoor enthusiastBritish Shorthair0.20.30.90.20.50.1Busy office workerBeagle0.90.90.30.60.41.0Playful young personSiamese Cat0.61.00.10.20.30.9Someone wanting a companionShiba Inu0.70.40.90.51.00.6Independent, patient ownerQuestionnaire Design (6 Questions)Q1【Activity】
-   The weekend is here, what is your ideal itinerary?
-   ✓ Hiking/Running/Adventure    → value=0.9 (High Activity)
-   ✓ Park Stroll/Shopping        → value=0.5 (Medium Activity)
-   ✓ Binge-watching/Sleeping     → value=0.1 (Low Activity)
+# 🐾 RIMBERIO - 寵物媒合推薦系統
 
-Q2【Affection】
-   When you are relaxing at home, you want your pet to:
-   ✓ Cuddle/Stick to you         → value=0.9 (High Affection)
-   ✓ Be in same room/Interact    → value=0.5 (Medium Affection)
-   ✓ Do their own thing          → value=0.2 (Low Affection)
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=ffffff)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.124.2-009485?style=flat-square&logo=fastapi)
+![LINE Bot](https://img.shields.io/badge/LINE-Bot%20SDK-00B900?style=flat-square&logo=line)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20DB-green?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
 
-Q3【Independence】
-   How long are you away for work on average per day?
-   ✓ Over 10 hours               → value=0.9 (Needs High Independence)
-   ✓ About 8 hours               → value=0.5 (Needs Medium Independence)
-   ✓ WFH/Lots of free time       → value=0.1 (Needs Low Independence)
+**RIMBERIO** 是一個基於 LINE Chatbot 的智慧領養顧問，結合向量空間演算法與 ChromaDB 向量數據庫，透過「6 維適性媒合推薦模型」，為飼主精準推薦最適合的寵物，旨在降低領養後的退養率。
 
-Q4【Space】
-   What is your current living environment?
-   ✓ House/Large Yard            → value=0.9 (Large Space)
-   ✓ Apartment (3 rooms)         → value=0.5 (Medium Space)
-   ✓ Studio/Shared Room          → value=0.1 (Small Space)
+---
 
-Q5【Grooming Tolerance】
-   How do you feel about pet hair in the house?
-   ✓ Absolutely not/Allergic     → value=0.1 (Cannot Accept)
-   ✓ Okay if I clean often       → value=0.5 (Acceptable)
-   ✓ Fur is home decoration      → value=0.9 (Fully Accept)
+## 核心特色
 
-Q6【Noise Level】
-   Regarding pet sounds/barking, your situation is:
-   ✓ Poor soundproofing/Hate noise → value=0.1 (Needs Quiet)
-   ✓ Residential area/Occasional   → value=0.5 (Standard Residential)
-   ✓ Countryside/Detached house    → value=0.9 (Accepts Noise)
-Quick Start1️⃣ Prerequisite EnvironmentBash# Check Python version (Requires 3.8+, Recommended 3.10+)
+| 特色 | 說明 |
+|------|------|
+| **推薦引擎** | 向量空間模型 (VSM) + ChromaDB 向量相似度計算，精準媒合飼主與寵物 |
+| **LINE 即時互動** | 無需下載 App，透過 LINE 聊天直接進行適性評估 |
+| **6 維特徵分析** | 活動力、親人程度、獨立性、空間需求、掉毛程度、吵鬧程度 |
+| **多輪對話流程** | 6 道情境化問題，漸進式建構用戶偏好向量 |
+
+---
+
+## 6 維特徵空間設計
+
+RIMBERIO 將「飼主-寵物 適配度」定義為 6 維向量空間，每個維度的取值範圍為 **[0.0 ~ 1.0]**：
+
+| 維度 ID | 特徵名稱 | 描述 | 低值 (0.0) | 高值 (1.0) |
+|--------|---------|------|-----------|-----------|
+| **0** | Activity | 活動力 | 宅男宅女 | 運動狂人 |
+| **1** | Affection | 親人程度 | 獨行俠 | 黏人精 |
+| **2** | Independence | 獨立性 | 時間充裕 | 時常外出 |
+| **3** | Space | 空間需求 | 小套房 | 大庭院 |
+| **4** | Grooming | 掉毛程度 | 幾乎不掉毛 | 掉毛狂魔 |
+| **5** | Noise | 吵鬧程度 | 安靜如鼠 | 聲震天下 |
+
+### 寵物特性向量示例
+
+| 寵物名稱 | Activity | Affection | Independence | Space | Grooming | Noise | 適合飼主 |
+|---------|----------|-----------|---------------|-------|----------|-------|---------|
+| 邊境牧羊犬 | 1.0 | 0.6 | 0.3 | 0.9 | 0.8 | 0.7 | 活潑愛運動的戶外派 |
+| 英國短毛貓 | 0.2 | 0.3 | 0.9 | 0.2 | 0.5 | 0.1 | 忙碌上班族 |
+| 米格魯 | 0.9 | 0.9 | 0.3 | 0.6 | 0.4 | 1.0 | 親人愛玩的年輕人 |
+| 暹羅貓 | 0.6 | 1.0 | 0.1 | 0.2 | 0.3 | 0.9 | 居家陪伴的伴侶獵人 |
+| 柴犬 | 0.7 | 0.4 | 0.9 | 0.5 | 1.0 | 0.6 | 獨立、有耐心的飼主 |
+
+---
+
+## 問卷設計 (6 道題目)
+
+```
+Q1【活動力】
+   週末到了，你理想的行程是？
+   ✓ 登山/跑步/探險           → value=0.9 (高活動力)
+   ✓ 公園散步/逛街            → value=0.5 (中等活動力)
+   ✓ 在家追劇/睡覺            → value=0.1 (低活動力)
+
+Q2【親人程度】
+   當你在家放鬆時，你希望寵物？
+   ✓ 黏在身上/討摸            → value=0.9 (高黏人度)
+   ✓ 待同房偶爾互動           → value=0.5 (中等黏人度)
+   ✓ 各做各的/不打擾          → value=0.2 (低黏人度)
+
+Q3【獨立性】
+   你平日外出工作的時間平均多久？
+   ✓ 超過 10 小時            → value=0.9 (高獨立性需求)
+   ✓ 約 8 小時               → value=0.5 (中等獨立性需求)
+   ✓ 在家工作/時間多          → value=0.1 (低獨立性需求)
+
+Q4【空間需求】
+   你目前的居住環境大致是？
+   ✓ 透天/有大庭院           → value=0.9 (大空間)
+   ✓ 一般公寓(3房)           → value=0.5 (中等空間)
+   ✓ 小套房/雅房             → value=0.1 (小空間)
+
+Q5【掉毛接受度】
+   對於家裡出現寵物毛髮？
+   ✓ 完全不行/過敏           → value=0.1 (不能接受)
+   ✓ 勤勞打掃就好            → value=0.5 (可以接受)
+   ✓ 毛是家飾一部分          → value=0.9 (完全接受)
+
+Q6【吵鬧程度】
+   關於寵物的叫聲，你的狀況是？
+   ✓ 隔音差/怕吵             → value=0.1 (需要安靜)
+   ✓ 住宅區/偶爾叫           → value=0.5 (普通住宅區)
+   ✓ 住鄉下/獨棟             → value=0.9 (可接受吵鬧)
+```
+
+---
+
+## 快速開始
+
+### 1️⃣ 前置環境要求
+
+```bash
+# 檢查 Python 版本 (需 3.8 以上，建議 3.10+)
 python --version
-2️⃣ Create Virtual Environment & Install PackagesBash# Clone this project to local machine
+```
+
+### 2️⃣ 建立虛擬環境與安裝套件
+
+```bash
+# 複製本專案到本機
 git clone https://github.com/mato1321/rimberio.git
 cd rimberio
 
-# Create virtual environment
+# 建立虛擬環境
 python -m venv venv
 
-# Activate virtual environment
+# 啟動虛擬環境
 # Windows
 venv\Scripts\activate
 
 # macOS / Linux
 source venv/bin/activate
 
-# Install all dependencies
+# 安裝所有依賴
 pip install -r requirements.txt
-3️⃣ Setup LINE Official Account (Messaging API)A. Create LINE Developers AccountGo to LINE Developers ConsoleLog in with your LINE accountClick "Create" to make a new Provider (e.g., Rimberio)B. Create Messaging API ChannelUnder the Provider you just created, click "Create a new channel"Select Messaging APIFill in the following info:Channel name:  RIMBERIO BotChannel description: Pet compatibility matching systemCategory: Personal UseSubcategory: OtherAgree to terms and complete creationC. Get Keys and Disable Auto-replyGo to your created Channel and navigate to:1. Basic Settings PageFind "Channel Secret"Click "Copy"2. Messaging API PageFind "Channel access token"Click "Generate" or "Regenerate"Click "Copy"3. Disable Auto-replyFind the "Auto-reply messages" section on the Messaging API pageClick "Edit"Set "Auto-response" to DisabledSet "Greeting message" to DisabledClick "Save"4️⃣ Setup Environment Variables (.env.example)Rename .env.example to .env and paste the Token and Secret you just copied:Bash# .env
-LINE_CHANNEL_ACCESS_TOKEN=Your_Copied_Long_Channel_Access_Token
-LINE_CHANNEL_SECRET=Your_Copied_Channel_Secret_Code
-5️⃣ Start Local Development ServerBash# Ensure virtual environment is activated
+```
+
+### 3️⃣ 設定 LINE 官方帳號 (Messaging API)
+
+#### A. 建立 LINE Developers 帳號
+
+1. 前往 [LINE Developers Console](https://developers.line.biz/zh-hant/)
+2. 用 LINE 帳號登入 (沒有帳號請先申請)
+3. 點擊「Create」建立新的 Provider (如:  Rimberio)
+
+#### B. 建立 Messaging API Channel
+
+1. 在剛建立的 Provider 下，點擊「Create a new channel」
+2. 選擇 **Messaging API**
+3. 填寫以下資訊：
+   - **Channel name**:  RIMBERIO Bot
+   - **Channel description**: 寵物適性媒合系統
+   - **Category**: 個人使用 (Personal Use)
+   - **Subcategory**: 其他
+4. 同意服務條款，完成建立
+
+#### C. 取得金鑰並關閉自動回覆
+
+進入建立好的 Channel，分別前往：
+
+**1. Basic Settings 頁面**
+   - 找到「Channel Secret」
+   - 點擊「Copy」複製
+
+**2. Messaging API 頁面**
+   - 找到「Channel access token」
+   - 點擊「Generate」或「Regenerate」
+   - 點擊「Copy」複製
+
+**3. 關閉自動回覆**
+   - 在 Messaging API 頁面找到 Auto-reply Messages 區塊
+   - 點擊「Edit」
+   - 將「Auto-response」設為 **Disabled** (停用)
+   - 將「Greeting message」也設為 **Disabled** (停用)
+   - 點擊「Save」
+
+### 4️⃣ 設定環境變數 (.env.example)
+
+把 `.env.example` 檔名，改成`.env`並且貼入剛才複製的 Token 與 Secret：
+
+```bash
+# .env
+LINE_CHANNEL_ACCESS_TOKEN=你複製的_Channel_Access_Token_長字串
+LINE_CHANNEL_SECRET=你複製的_Channel_Secret_亂碼
+```
+
+### 5️⃣ 啟動本機開發伺服器
+
+```bash
+# 確保虛擬環境已啟動
 python -m uvicorn main:app --reload
-Output should look like this:INFO:     Uvicorn running on http://127.0.0.1:8000
+```
+
+輸出應如下：
+```
+INFO:     Uvicorn running on http://127.0.0.1:8000
 INFO:     Application startup complete
-6️⃣ Create Public Tunnel (Ngrok)To allow LINE servers to connect to your local machine, use Ngrok to create a secure tunnel.A. Download and Install NgrokGo to Ngrok Official SiteDownload the version for your OSUnzip to a convenient location (e.g., C:\Tools\ngrok)B. Start NgrokRun in a new terminal window:Bash# Windows (Assuming ngrok is in C:\Tools\ngrok)
+```
+
+### 6️⃣ 建立公網通道 (Ngrok)
+
+為了讓 LINE 伺服器能夠連到你的本機電腦，需要用 Ngrok 建立安全隧道。
+
+#### A. 下載並安裝 Ngrok
+
+1. 前往 [Ngrok 官網](https://ngrok.com/download)
+2. 下載對應你作業系統的版本
+3. 解壓縮到方便的位置 (如: C:\Tools\ngrok)
+
+#### B. 啟動 Ngrok
+
+**在新的終端機視窗中執行**：
+
+```bash
+# Windows (假設 ngrok 在 C:\Tools\ngrok)
 C:\Tools\ngrok\ngrok.exe http 8000
 
 # macOS / Linux
 ./ngrok http 8000
-You will see output similar to:ngrok                                                             (Ctrl-C to quit)
+```
+
+你會看到類似的輸出：
+```
+ngrok                                                             (Ctrl-C to quit)
 
 Session Status                online
 Session Expires               1 hour, 59 minutes
@@ -71,128 +212,266 @@ Version                       3.0.0
 Region                        Tokyo (jp)
 Forwarding                    https://xxxx-xxxx.ngrok-free.app -> http://localhost:8000
 Forwarding                    http://xxxx-xxxx.ngrok-free.app -> http://localhost:8000
-Copy the HTTPS URL from the Forwarding field (Must start with https), example:https://1a2b-3c4d-5e6f.ngrok-free.app
-7️⃣ Setup LINE Webhook URLReturn to the LINE Developers Console, on your Channel's Messaging API page:Find the "Webhook URL" fieldClick "Edit"Paste the Ngrok URL + /callback, example:https://1a2b-3c4d-5e6f.ngrok-free.app/callback
-Click "Update"Ensure the "Use webhook" toggle is ONFind the "Verify" button and click itIf it shows "Success", your bot is successfully connected!Usage TutorialStep 1: Add Bot as FriendOn the LINE Developers Console Channel page, find the QR CodeScan the QR Code with your LINE AppClick "Add" to friend the botStep 2: Start TestType any of the following keywords in the chat:StartTestStart Test (or 開始, 測驗 in Chinese)The bot will reply:Welcome to RIMBERIO!
-We will help you find the perfect pet through 6 questions.
+```
 
-Are you ready? Let's start!
-Step 3: Answer QuestionsThe bot will ask questions one by one. Select your answer by clicking the buttons:Question 1
+**複製 Forwarding 欄位中的 HTTPS 網址** (必須是 https 開頭)，例如：
+```
+https://1a2b-3c4d-5e6f.ngrok-free.app
+```
 
-【Q1/6 Activity】
-The weekend is here, what is your ideal itinerary?
+### 7️⃣ 設定 LINE Webhook URL
 
-[Hiking/Run] [Park/Shop] [Home/Sleep]
-Step 4: Receive RecommendationsAfter finishing the 6 questions, the bot will immediately analyze and reply:RIMBERIO Recommendation Results!
-Based on your lifestyle, your most suitable partners are:
+回到 [LINE Developers Console](https://developers.line.biz/zh-hant/)，在你的 Channel 的 **Messaging API** 頁面：
 
-Rank 1: British Shorthair
-Match Score: 85%
-A quiet and steady gentleman, suitable for busy office workers in small apartments.
+1. 找到「Webhook URL」欄位
+2. 點擊「Edit」
+3. 貼上 Ngrok 網址 + `/callback`，例如：
+   ```
+   https://1a2b-3c4d-5e6f.ngrok-free.app/callback
+   ```
+4. 點擊「Update」
+5. 在下方的「Use webhook」開關，確保已**開啟**
+6. 找到「Verify」按鈕，點擊驗證
+
+如果顯示 **"Success"**，代表機器人已成功連線！
+
+---
+
+## 使用教學
+
+### 第一步：加入機器人好友
+
+1. 在 LINE Developers Console 的 Channel 頁面，找到 **QR Code**
+2. 用 LINE App 掃描 QR Code
+3. 點擊「加入」將機器人加為好友
+
+### 第二步：開始測驗
+
+在聊天視窗中輸入以下任一關鍵字：
+- `開始`
+- `測驗`
+- `開始測驗`
+
+機器人會回覆：
+```
+歡迎來到 RIMBERIO！
+我們將透過 6 個問題，幫你找到適合的寵物。
+
+準備好了嗎？讓我們開始吧！
+```
+
+### 第三步：回答問題
+
+機器人會逐一提問，每題提供 3 個選項，點擊按鈕選擇：
+
+```
+問題 1
+
+【Q1/6 活動力】
+週末到了，你理想的行程是？
+
+[登山/跑步/探險] [公園散步/逛街] [在家追劇/睡覺]
+```
+
+### 第四步：接收推薦結果
+
+完成 6 道題目後，機器人會立即分析並回覆：
+
+```
+RIMBERIO 推薦結果出爐！
+根據你的生活型態，最適合你的夥伴是：
+
+第 1 名：英國短毛貓
+速配指數：85%
+安靜沈穩的紳士，適合忙碌且住在小公寓的上班族。
 --------------------
 
-Rank 2: Siamese Cat
-Match Score: 72%
-The velcro of the cat world, very vocal and needs your constant company.
+第 2 名：暹羅貓
+速配指數：72%
+貓界像皮糖，非常愛講話，需要你隨時的陪伴。
 --------------------
 
-Rank 3: Border Collie
-Match Score: 45%
-Genius level intelligence, but needs massive exercise and space. For experienced outdoor types.
+第 3 名：邊境牧羊犬
+速配指數：45%
+智商天花板，但需要大量運動與空間，適合戶外派的老手。
 --------------------
 
-Want to test again? Please type "Start".
-Technical Deep DiveCore Algorithm: Vector Space Model (VSM)The core of RIMBERIO's recommendation engine is Euclidean Distance:$$d = \sqrt{\sum_{i=0}^{5} (user_i - pet_i)^2}$$Where:user_i = User's preference value in dimension ipet_i = Pet's characteristic value in dimension id = Euclidean Distance (Smaller is more similar)Match Score Calculation:match_score = max(0, (1 - distance) × 100%)
-Advantages of ChromaDBCompared to calculating all distances directly, using ChromaDB vector database offers:AdvantageDescriptionEfficient QueryingUses HNSW indexing to quickly locate nearest neighbor petsScalabilityQuery time remains logarithmic as the number of pets increasesPersistencePet data is persisted; no need to re-initialize on server restartFlexible MetadataSupports text metadata like pet names and descriptionsFastAPI Asynchronous FlowPython# Event Driven Flow
-1. LINE User sends message
-   └─> 2.   Ngrok forwards to /callback endpoint
-        └─> 3. handler.handle() parses signature and event
-            └─> 4. @handler.add() route dispatch
-                ├─> MessageEvent (Start Test)
-                │   └─> send_question() Send first question
-                └─> PostbackEvent (Answer Question)
-                    └─> Update user_sessions[user_id]['vector']
-                    └─> Check if more questions exist
-                        ├─> YES: send_question() Send next question
-                        └─> NO:  show_recommendation() Recommend pet
-Dependency OverviewPlaintextCore Framework Layer
-├── fastapi==0.124.2          (Web Framework)
-├── uvicorn==0.38.0           (ASGI Server)
-├── starlette==0.50.0         (FastAPI Base)
-└── httptools==0.7.1          (HTTP Parsing)
+想要重新測驗嗎？請輸入「開始」。
+```
 
-LINE Integration Layer
-├── line-bot-sdk==3.21.0      (LINE Official SDK)
-├── aiohttp==3.13.2           (Async HTTP)
-└── websockets==15.0.1        (WebSocket Support)
+---
 
-Vector DB Layer
-├── chromadb==1.3.6           (Vector Database)
-├── onnxruntime==1.23.2       (Model Inference)
-├── numpy==2.3.5              (Numerical Comp)
-└── pandas==2.3.3             (Data Processing)
+## 技術深度解析
 
-Environment & Tools
-├── python-dotenv==1.2.1      (Env Var Management)
-├── pydantic==2.12.5          (Data Validation)
-└── requests==2.32.5          (HTTP Client)
-Full Package List: See requirements.txt (Total 104 dependencies)System Architecture┌─────────────────────────────────────────────────────┐
-│                      LINE User                      │
-│            (Scan QR Code to add Bot)                │
+### 核心演算法：向量空間模型 (Vector Space Model, VSM)
+
+RIMBERIO 的推薦引擎核心是**歐幾里得距離** (Euclidean Distance)：
+
+$$d = \sqrt{\sum_{i=0}^{5} (user_i - pet_i)^2}$$
+
+其中：
+- `user_i` = 使用者在第 i 維的偏好值
+- `pet_i` = 寵物在第 i 維的特性值
+- `d` = 歐幾里得距離 (越小越相似)
+
+**速配指數計算**：
+```
+match_score = max(0, (1 - distance) × 100%)
+```
+
+### ChromaDB 的優勢
+
+相比直接計算所有距離，使用 ChromaDB 向量數據庫具有：
+
+| 優勢 | 說明 |
+|------|------|
+| **高效查詢** | 利用 HNSW 索引快速定位近鄰寵物 |
+| **可擴展性** | 寵物數量增加時，查詢時間仍維持對數級別 |
+| **持久化存儲** | 寵物資料可持久化，重啟伺服器無需重新初始化 |
+| **靈活元數據** | 支援寵物名稱、描述等文本元數據 |
+
+### FastAPI 非同步流程
+
+```python
+# 事件驅動流程
+1. LINE 使用者傳送訊息
+   └─> 2.   Ngrok 轉發到 /callback 端點
+       └─> 3. handler. handle() 解析簽名與事件
+           └─> 4. @handler.add() 路由分發
+               ├─> MessageEvent (啟動測驗)
+               │   └─> send_question() 發送第一題
+               └─> PostbackEvent (回答題目)
+                   └─> 更新 user_sessions[user_id]['vector']
+                   └─> 判斷是否還有題目
+                       ├─> YES: send_question() 發送下一題
+                       └─> NO:  show_recommendation() 推薦寵物
+```
+
+---
+
+## 依賴套件簡介
+
+```txt
+核心框架層
+├── fastapi==0.124.2          (Web 框架)
+├── uvicorn==0.38.0           (ASGI 伺服器)
+├── starlette==0.50.0         (FastAPI 基礎層)
+└── httptools==0.7.1          (HTTP 解析加速)
+
+LINE 整合層
+├── line-bot-sdk==3.21.0      (LINE 官方 SDK)
+├── aiohttp==3.13.2           (非同步 HTTP)
+└── websockets==15.0. 1        (WebSocket 支援)
+
+向量 DB 層
+├── chromadb==1.3.6           (向量資料庫)
+├── onnxruntime==1.23.2       (模型推理加速)
+├── numpy==2.3.5              (數值計算)
+└── pandas==2.3.3             (資料處理)
+
+環境與工具
+├── python-dotenv==1.2.1      (環境變數管理)
+├── pydantic==2.12.5          (資料驗證)
+└── requests==2.32.5          (HTTP 客戶端)
+```
+
+**完整套件清單**：見 `requirements.txt` (共 104 個依賴)
+
+---
+
+## 系統架構
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  LINE 用戶                          │
+│            (掃描 QR Code 加入機器人)                 │
 └────────────────────┬────────────────────────────────┘
                      │ LINE Messaging API
                      ▼
 ┌─────────────────────────────────────────────────────┐
-│  Ngrok (Public HTTPS Tunnel - https://xxxx.app)     │
-│       (Bridge: Local Dev Env → Public Internet)     │
+│  Ngrok (Public HTTPS Tunnel - https://xxxx.app)    │
+│            (本機開發環境→公網橋梁)                   │
 └────────────────────┬────────────────────────────────┘
                      │ POST /callback
                      ▼
 ┌─────────────────────────────────────────────────────┐
 │          FastAPI Web Server (Port 8000)             │
-│                    (main.py)                        │
-│  ┌──────────────────────────────────────────────┐   │
-│  │  • WebhookHandler Event Routing              │   │
-│  │  • MessageEvent Handler (Start Test)         │   │
-│  │  • PostbackEvent Handler (Answer Questions)  │   │
-│  │  • user_sessions Memory Management           │   │
-│  └──────────────────────────────────────────────┘   │
+│                  (main.py)                          │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  • WebhookHandler 事件路由                    │  │
+│  │  • MessageEvent 處理 (啟動測驗)               │  │
+│  │  • PostbackEvent 處理 (回答問題)              │  │
+│  │  • user_sessions 記憶體管理                  │  │
+│  └──────────────────────────────────────────────┘  │
 └────────────────────┬────────────────────────────────┘
-                     │ Vector Query
+                     │ 向量化查詢
                      ▼
 ┌─────────────────────────────────────────────────────┐
-│       Data Model Layer (data_model.py)              │
-│  ┌──────────────────────────────────────────────┐   │
-│  │  DIMENSIONS:  [Activity, Affection, ...]     │   │
-│  │  QUESTIONS:   6 Assessment Questions         │   │
-│  │  PET_DB: 5 Pets (Vector Representation)      │   │
-│  │  ChromaDB: Vector DB (Euclidean Distance)    │   │
-│  └──────────────────────────────────────────────┘   │
+│     Data Model Layer (data_model.py)                │
+│  ┌──────────────────────────────────────────────┐  │
+│  │  DIMENSIONS:  [Activity, Affection, ...]      │  │
+│  │  QUESTIONS:  6 道適性評估題                    │  │
+│  │  PET_DB: 5 隻寵物 (向量表示)                  │  │
+│  │  ChromaDB: 向量數據庫 (Euclidean Distance) │  │
+│  └──────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────┘
-                     │ Recommendation Result
+                     │ 推薦結果
                      ▼
 ┌─────────────────────────────────────────────────────┐
-│    Recommendation (Flex Message / Text Message)     │
-│  • Top 3 Pet Candidates                             │
-│  • Match Score (0-100%)                             │
-│  • Pet Characteristic Description                   │
+│  推薦回覆 (Flex Message / Text Message)             │
+│  • 排序前 3 名寵物候選                              │
+│  • 速配指數 (0-100%)                               │
+│  • 寵物特性說明                                     │
 └─────────────────────────────────────────────────────┘
-Project Directory Structurerimberio/
-├── .env.example                  # Env vars, rename this (LINE Token & Secret)
-├── .gitignore                    # Git ignore settings
-├── main.py                       # FastAPI Main Program
-│   ├── FastAPI App Init
-│   ├── LINE WebhookHandler Routing
-│   ├── Text Message Handling (Start Logic)
-│   ├── Postback Handling (Answer Logic)
-│   ├── send_question() - Function to send Qs
-│   └── show_recommendation() - Function to show results
+```
+
+---
+
+## 專案目錄結構
+
+```
+rimberio/
+├── .env.example                  # 環境變數，需要改檔名 (LINE Token & Secret)
+├── .gitignore                    # Git 忽略設定
+├── main.py                       # FastAPI 主程式
+│   ├── FastAPI 應用初始化
+│   ├── LINE WebhookHandler 路由
+│   ├── 文字訊息事件處理 (啟動測驗邏輯)
+│   ├── Postback 事件處理 (問卷回答邏輯)
+│   ├── send_question() - 發送題目函式
+│   └── show_recommendation() - 顯示推薦結果函式
 │
-├── data_model.py                 # Data Model & Vector DB 
-│   ├── DIMENSIONS[] - 6 Dim Definitions
-│   ├── PET_DB[] - 5 Pet Data (With Vectors)
-│   ├── QUESTIONS[] - 6 Questions
-│   └── ChromaDB Init & get_recommendations()
+├── data_model.py                 # 數據模型 & 向量DB 
+│   ├── DIMENSIONS[] - 6 維特徵定義
+│   ├── PET_DB[] - 5 隻寵物資料 (帶向量表示)
+│   ├── QUESTIONS[] - 6 道問卷題目
+│   └── ChromaDB 初始化 & get_recommendations()
 │
-├── requirements.txt              # Dependency List 
-ContactEmail: mato1321@example.comGitHub: @mato1321Issues: If you have any questions, feel free to open an issue at GitHub IssuesLicenseThis project is licensed under the MIT License. You are free to use, copy, and modify this project.Welcome to RIMBERIO, finding the perfect home for furry friends! ```ᙏ̥ (๑•́  ω •̀๑)∧_∧( ´・ω・)/   ⊃⊂(´・ω・`)
+├── requirements. txt             # 依賴套件清單 
+```
+
+---
+
+## 聯絡方式
+
+- **Email**: mato1321@example.com
+- **GitHub**: [@mato1321](https://github.com/mato1321)
+- **Issues**: 如有任何問題，歡迎在 [GitHub Issues](https://github.com/mato1321/rimberio/issues) 中提出
+
+---
+
+## 開源授權
+
+本專案採用 **MIT License**，你可以自由地使用、複製、修改本專案。
+
+---
+
+**歡迎使用 RIMBERIO，為毛孩找到最適合的家！** 
+
+```
+      ᙏ̥ (๑•́  ω •̀๑)  
+     ∧_∧
+    ( ´・ω・)  
+   /   ⊃⊂  \
+  (´・ω・`)   
+```
