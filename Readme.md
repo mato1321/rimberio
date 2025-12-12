@@ -1,5 +1,6 @@
 # 🐾 RIMBERIO - AI 寵物適性媒合系統
 
+![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat-square&logo=python&logoColor=ffffff)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.124.2-009485?style=flat-square&logo=fastapi)
 ![LINE Bot](https://img.shields.io/badge/LINE-Bot%20SDK-00B900?style=flat-square&logo=line)
 ![ChromaDB](https://img.shields.io/badge/ChromaDB-Vector%20DB-green?style=flat-square)
