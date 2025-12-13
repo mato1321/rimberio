@@ -17,9 +17,25 @@ load_dotenv()
 app = FastAPI()
 channel_secret = os.getenv('LINE_CHANNEL_SECRET')
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
-if channel_secret is None or channel_access_token is None: 
-    print("錯誤：找不到 . env 設定，請確認檔案是否存在。")
+cloudinary_cloud_name = os.getenv('CLOUDINARY_CLOUD_NAME')
+cloudinary_api_key = os.getenv('CLOUDINARY_API_KEY')
+cloudinary_api_secret = os.getenv('CLOUDINARY_API_SECRET')
+
+if channel_secret is None or channel_access_token is None:  
+    print("錯誤：找不到 .env 設定，請確認檔案是否存在。")
     sys.exit(1)
+
+# 設定 Cloudinary
+if cloudinary_cloud_name and cloudinary_api_key and cloudinary_api_secret:
+    generate_radar_chart.set_cloudinary_credentials(
+        cloudinary_cloud_name,
+        cloudinary_api_key,
+        cloudinary_api_secret
+    )
+    print("✅ Cloudinary 認證已設定")
+else:
+    print("❌ Cloudinary 認證未設定，圖表無法上傳")
+
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 user_sessions = {}  # 存放使用者測驗進度與向量
@@ -60,51 +76,58 @@ def show_recommendation(user_id, user_vector):
     for i, pet in enumerate(recommendations):
         match_score = int((1 - pet['score']) * 100)
         match_score = max(0, match_score)
-        reply_text += f"🏆 第 {i+1} 名：{pet['name']}\n"
-        reply_text += f"❤️ 速配指數：{match_score}%\n"
-        reply_text += f"📝 {pet['desc']}\n\n"
+        reply_text += f"第 {i+1} 名：{pet['name']}\n"
+        reply_text += f"速配指數：{match_score}%\n"
+        reply_text += f"{pet['desc']}\n\n"
     
     reply_text += "想要重新測驗請輸入「開始」。"
     line_bot_api.push_message(user_id, TextSendMessage(text=reply_text))
     
     # 生成雷達圖表
     pet_vectors_dict = {}
-    for pet in recommendations[: 3]: 
+    for pet in recommendations[:  3]:  
         for p in data_model.PET_DB:
             if p['name'] == pet['name']:
                 pet_vectors_dict[pet['name']] = p['vector']
                 break
     
     try:
-        # 生成並儲存圖表到臨時檔案
-        temp_file = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
-        temp_path = temp_file.name
-        temp_file.close()
+        # 生成圖表並上傳到 Cloudinary
+        cloud_url = generate_radar_chart.generate_radar_chart(user_vector, pet_vectors_dict)
         
-        generate_radar_chart.generate_radar_chart(user_vector, pet_vectors_dict, temp_path)
-        
-        # 推送圖表
+        if cloud_url:
+            print(f"✅ 圖表已上傳到 Cloudinary:  {cloud_url}")
+            
+            # 推送圖表給使用者
+            line_bot_api.push_message(
+                user_id,
+                ImageSendMessage(
+                    original_content_url=cloud_url,
+                    preview_image_url=cloud_url
+                )
+            )
+        else:
+            print("❌ 圖表上傳失敗")
+            line_bot_api.push_message(
+                user_id,
+                TextSendMessage(text="圖表生成失敗，但推薦結果已顯示。")
+            )
+            
+    except Exception as e: 
+        print(f"❌ 圖表生成或上傳失敗: {e}")
         line_bot_api.push_message(
             user_id,
-            ImageSendMessage(
-                original_content_url='https://via.placeholder.com/1024x1024',
-                preview_image_url='https://via.placeholder.com/240x240'
-            )
+            TextSendMessage(text="圖表生成失敗，但推薦結果已顯示。")
         )
-        
-        # 清理臨時檔案
-        os. unlink(temp_path)
-    except Exception as e:
-        print(f"圖表生成失敗:  {e}")
 
 # FastAPI 路由設定
 @app.get("/")
 def read_root():
-    return {"status": "RIMBERIO Bot is running!"}
+    return {"status": "RIMBERIO Bot is running! "}
 
 @app.post("/callback")
 async def callback(request: Request):
-    signature = request.headers. get('X-Line-Signature', '')
+    signature = request.headers.get('X-Line-Signature', '')
     body = await request.body()
     body_decoded = body.decode('utf-8')
 
@@ -118,10 +141,10 @@ async def callback(request: Request):
 # 啟動測驗
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    msg = event.message. text. strip()
+    msg = event.message.text.strip()
     user_id = event.source.user_id
     
-    if msg == "開始" or msg == "測驗" or msg == "開始測驗": 
+    if msg == "開始" or msg == "測驗" or msg == "開始測驗":  
         # 初始化使用者狀態
         user_sessions[user_id] = {
             'step': 0,
@@ -133,7 +156,7 @@ def handle_message(event):
         send_question(user_id, 0)
     else:
         reply = "輸入「開始」可以進行寵物配對測驗"
-        line_bot_api. reply_message(event.reply_token, TextSendMessage(text=reply))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
 
 # 處理使用者點擊按鈕後的事件
 @handler.add(PostbackEvent)
@@ -145,12 +168,12 @@ def handle_postback(event):
     val = float(params['value'])
 
     # 檢查使用者是否存在 session 中
-    if user_id not in user_sessions: 
-        line_bot_api. reply_message(event.reply_token, TextSendMessage(text="連線逾時，請輸入「開始」重新測驗。"))
+    if user_id not in user_sessions:  
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text="連線逾時，請輸入「開始」重新測驗。"))
         return
 
     # 更新向量分數
-    dim_index = data_model. QUESTIONS[q_index]['dimension_index']
+    dim_index = data_model.QUESTIONS[q_index]['dimension_index']
     user_sessions[user_id]['vector'][dim_index] = val
     
     # 進入下一題
