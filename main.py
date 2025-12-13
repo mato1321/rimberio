@@ -32,9 +32,9 @@ if cloudinary_cloud_name and cloudinary_api_key and cloudinary_api_secret:
         cloudinary_api_key,
         cloudinary_api_secret
     )
-    print("✅ Cloudinary 認證已設定")
+    print("Cloudinary 認證已設定")
 else:
-    print("❌ Cloudinary 認證未設定，圖表無法上傳")
+    print("Cloudinary 認證未設定，圖表無法上傳")
 
 line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
@@ -70,7 +70,7 @@ def send_question(user_id, question_index):
 # 顯示推薦結果
 def show_recommendation(user_id, user_vector):
     recommendations = data_model.get_recommendations(user_vector, n_results=3)
-    reply_text = "🎉 推薦結果出爐！\n"
+    reply_text = "推薦結果出爐\n"
     reply_text += "根據你的生活型態，最適合你的夥伴是：\n\n"
     
     for i, pet in enumerate(recommendations):
@@ -96,7 +96,7 @@ def show_recommendation(user_id, user_vector):
         cloud_url = generate_radar_chart.generate_radar_chart(user_vector, pet_vectors_dict)
         
         if cloud_url:
-            print(f"✅ 圖表已上傳到 Cloudinary:  {cloud_url}")
+            print(f"圖表已上傳到 Cloudinary:  {cloud_url}")
             
             # 推送圖表給使用者
             line_bot_api.push_message(
@@ -107,14 +107,14 @@ def show_recommendation(user_id, user_vector):
                 )
             )
         else:
-            print("❌ 圖表上傳失敗")
+            print("圖表上傳失敗")
             line_bot_api.push_message(
                 user_id,
                 TextSendMessage(text="圖表生成失敗，但推薦結果已顯示。")
             )
             
     except Exception as e: 
-        print(f"❌ 圖表生成或上傳失敗: {e}")
+        print(f"圖表生成或上傳失敗: {e}")
         line_bot_api.push_message(
             user_id,
             TextSendMessage(text="圖表生成失敗，但推薦結果已顯示。")

@@ -7,16 +7,11 @@ import cloudinary
 import cloudinary.uploader
 import tempfile
 import os
-
-# 設定中文字體
 matplotlib.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'SimHei', 'DejaVu Sans']
 matplotlib.rcParams['axes.unicode_minus'] = False
-
-# 六維度名稱（中文）
 DIMENSION_LABELS_CN = ['活動力', '親人程度', '獨立性', '空間需求', '掉毛程度', '吵鬧程度']
 
 def set_cloudinary_credentials(cloud_name, api_key, api_secret):
-    """設定 Cloudinary 認證"""
     cloudinary.config(
         cloud_name=cloud_name,
         api_key=api_key,
@@ -24,15 +19,6 @@ def set_cloudinary_credentials(cloud_name, api_key, api_secret):
     )
 
 def upload_to_cloudinary(image_path):
-    """
-    上傳圖片到 Cloudinary
-    
-    Args:
-        image_path:  圖片檔案路徑
-    
-    Returns:
-        Cloudinary URL
-    """
     try:
         result = cloudinary.uploader.upload(
             image_path,
@@ -42,14 +28,10 @@ def upload_to_cloudinary(image_path):
         )
         return result['secure_url']
     except Exception as e:
-        print(f"❌ Cloudinary 上傳失敗: {e}")
+        print(f"Cloudinary 上傳失敗: {e}")
         return None
 
-def generate_radar_chart(user_vector, pet_vectors_dict, output_path=None):
-    """
-    生成雷達圖表並上傳到 Cloudinary
-    """
-    
+def generate_radar_chart(user_vector, pet_vectors_dict, output_path=None):    
     # 設定角度
     angles = np.linspace(0, 2 * np.pi, len(DIMENSION_LABELS_CN), endpoint=False).tolist()
     angles += angles[:1]
@@ -90,7 +72,7 @@ def generate_radar_chart(user_vector, pet_vectors_dict, output_path=None):
     ax.legend(loc='upper right', bbox_to_anchor=(1.2, 1.1), fontsize=9, framealpha=0.9)
     
     # 標題
-    plt.title('六維與情指數', size=13, weight='bold', pad=15)
+    plt.title('六維偏好指數', size=13, weight='bold', pad=15)
     
     plt.tight_layout()
     
@@ -112,9 +94,6 @@ def generate_radar_chart(user_vector, pet_vectors_dict, output_path=None):
 
 
 def generate_user_only_radar(user_vector, output_path=None):
-    """
-    只生成使用者的雷達圖並上傳到 Cloudinary
-    """
     angles = np.linspace(0, 2 * np.pi, len(DIMENSION_LABELS_CN), endpoint=False).tolist()
     angles += angles[:1]
     
@@ -156,9 +135,6 @@ def generate_user_only_radar(user_vector, output_path=None):
 
 
 def generate_pet_comparison_radar(user_vector, pet_name, pet_vector, output_path=None):
-    """
-    生成使用者和單一寵物的對比雷達圖並上傳到 Cloudinary
-    """
     angles = np.linspace(0, 2 * np.pi, len(DIMENSION_LABELS_CN), endpoint=False).tolist()
     angles += angles[:1]
     
