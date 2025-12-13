@@ -1,7 +1,5 @@
-# data_model.py
 import chromadb
-
-# --- 1. 核心維度定義 ---
+# 核心維度定義 ---
 DIMENSIONS = [
     "Activity",      # 0: 活動力
     "Affection",     # 1: 親人程度
@@ -10,8 +8,7 @@ DIMENSIONS = [
     "Grooming",      # 4: 掉毛程度
     "Noise"          # 5: 吵鬧程度
 ]
-
-# --- 2. 寵物模擬資料庫 ---
+# 寵物模擬資料庫
 PET_DB = [
     {
         "id": "dog_border_collie",
@@ -44,8 +41,7 @@ PET_DB = [
         "desc": "個性獨立像貓的狗，很有主見，換毛季需要勤梳毛。"
     }
 ]
-
-# --- 3. 問卷題目設計 ---
+# 問卷題目設計
 QUESTIONS = [
     {
         "id": "q1",
@@ -109,31 +105,24 @@ QUESTIONS = [
     }
 ]
 
-# --- 4. ChromaDB 初始化與查詢功能 ---
-
+# ChromaDB 初始化與查詢功能
 client = chromadb.Client()
 collection_name = "rimberio_pets_v1"
-
 try:
     collection = client.get_collection(collection_name)
 except:
     collection = client.create_collection(collection_name)
     ids = [p['id'] for p in PET_DB]
     embeddings = [p['vector'] for p in PET_DB]
-    
-    # 【修正重點在這裡】
-    # 之前寫成 p['description'] (錯誤)，已更正為 p['desc'] (正確)
     metadatas = [{"name": p['name'], "desc": p['desc']} for p in PET_DB]
-    
     collection.add(ids=ids, embeddings=embeddings, metadatas=metadatas)
-    print("✅ ChromaDB 資料庫初始化完成，資料已寫入。")
+    print("ChromaDB 資料庫初始化完成，資料已寫入。")
 
 def get_recommendations(user_vector, n_results=3):
     results = collection.query(
         query_embeddings=[user_vector],
         n_results=n_results
     )
-    
     recommendations = []
     for i in range(len(results['ids'][0])):
         recommendations.append({
