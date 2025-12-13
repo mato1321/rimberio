@@ -454,7 +454,7 @@ rimberio/
 
 ## 聯絡方式
 
-- **Email**: mato1321@example.com
+- **Email**: charleskao811@gmail.com
 - **GitHub**: [@mato1321](https://github.com/mato1321)
 - **Issues**: 如有任何問題，歡迎在 [GitHub Issues](https://github.com/mato1321/rimberio/issues) 中提出
 
