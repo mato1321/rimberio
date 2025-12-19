@@ -1229,3 +1229,41 @@ def get_recommendations(user_vector, n_results=3):
             "score": results['distances'][0][i]
         })
     return recommendations
+
+
+def validate_questions_weights():
+    """驗證所有 QUESTIONS 的權重配置"""
+    dimension_weights = {i: 0.0 for i in range(6)}
+    dimension_count = {i: 0 for i in range(6)}
+    
+    for q in QUESTIONS:
+        dim = q['dimension_index']
+        weight = q.get('weight', 0.0)
+        dimension_weights[dim] += weight
+        dimension_count[dim] += 1
+    
+    print("\n" + "="*50)
+    print("📋 權重驗證結果")
+    print("="*50)
+    
+    errors = []
+    for dim in range(6):
+        total_weight = dimension_weights[dim]
+        count = dimension_count[dim]
+        status = "✅" if abs(total_weight - 1.0) < 0.01 else "❌"
+        
+        print(f"{status} 維度 {dim}: {count} 題，權重總和 = {total_weight:.4f}")
+        
+        if abs(total_weight - 1.0) > 0.01:
+            errors.append(f"維度 {dim}:  權重總和 = {total_weight:.4f} (應為 1.0)")
+    
+    print("="*50)
+    
+    if errors:
+        print("❌ 權重驗證失敗：")
+        for error in errors:
+            print(f"  - {error}")
+        return False
+    else:
+        print("✅ 所有維度的權重配置正確！")
+        return True

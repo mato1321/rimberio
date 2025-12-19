@@ -14,6 +14,9 @@ import data_model
 import generate_radar_chart
 
 load_dotenv()
+
+# 在啟動時驗證問卷配置
+data_model.validate_questions_weights()
 app = FastAPI()
 channel_secret = os.getenv('LINE_CHANNEL_SECRET')
 channel_access_token = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
@@ -43,19 +46,36 @@ user_sessions = {}  # 存放使用者測驗進度與向量
 def calculate_weighted_average(user_session):
     """
     計算每個維度的加權平均值
+    
+    : param user_session: 用戶的 session 數據
+    :return: 6 維的最終向量 [0.0-1.0]
     """
     final_vector = []
+    
     for dim_index in range(6):
-        answers = user_session['dimension_answers'][dim_index]
-        weights = user_session['dimension_weights'][dim_index]
+        answers = user_session.get('dimension_answers', {}).get(dim_index, [])
+        weights = user_session.get('dimension_weights', {}).get(dim_index, [])
         
-        if len(answers) == 0:
+        # 安全檢查
+        if not answers or not weights:
+            # 如果沒有答案，使用中位值 0.5
+            final_vector.append(0.5)
+        elif len(answers) != len(weights):
+            # 答案數和權重數不匹配（不應該發生）
+            print(f"警告：維度 {dim_index} 答案數({len(answers)})和權重數({len(weights)})不匹配")
             final_vector.append(0.5)
         else:
+            # 計算加權平均
             weighted_sum = sum(a * w for a, w in zip(answers, weights))
             total_weight = sum(weights)
-            dimension_value = weighted_sum / total_weight
-            # Clamp to [0.0, 1.0] range for safety (though values should already be within bounds)
+            
+            # 驗證權重總和應為 1.0
+            if abs(total_weight - 1.0) > 0.01:  # 允許浮點誤差
+                print(f"警告：維度 {dim_index} 的權重總和為 {total_weight}，不等於 1.0")
+            
+            dimension_value = weighted_sum / total_weight if total_weight > 0 else 0.5
+            
+            # 確保值在 [0.0, 1.0] 範圍內
             dimension_value = max(0.0, min(1.0, dimension_value))
             final_vector.append(dimension_value)
     
@@ -169,9 +189,9 @@ def handle_message(event):
         # 初始化使用者狀態
         user_sessions[user_id] = {
             'step': 0,
-            'vector': [0.5] * 6,
+            'vector': [0.0] * 6,
             'dimension_answers': {i: [] for i in range(6)},
-            'dimension_weights': {i: [] for i in range(6)}
+            'dimension_weights': {i:  [] for i in range(6)}
         }
         
         reply = "歡迎來到 RIMBERIO！\n我們將透過 30 個問題，幫你找到靈魂伴侶。\n準備好了嗎？"
@@ -195,10 +215,9 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="連線逾時，請輸入「開始」重新測驗。"))
         return
 
-    # 累加答案和權重
-    question = data_model.QUESTIONS[q_index]
-    dim_index = question['dimension_index']
-    weight = question['weight']
+    # 累加答案和權重（不再直接覆蓋）
+    dim_index = data_model.QUESTIONS[q_index]['dimension_index']
+    weight = data_model.QUESTIONS[q_index].get('weight', 0.2)
     
     user_sessions[user_id]['dimension_answers'][dim_index].append(val)
     user_sessions[user_id]['dimension_weights'][dim_index].append(weight)
@@ -210,7 +229,7 @@ def handle_postback(event):
     if next_step < len(data_model.QUESTIONS):
         send_question(user_id, next_step)
     else:
-        # 題目問完了，計算加權平均並顯示結果
+        # 題目問完了，計算最終向量並顯示結果
         final_vector = calculate_weighted_average(user_sessions[user_id])
         user_sessions[user_id]['vector'] = final_vector
         print(f"User {user_id} vector: {final_vector}")

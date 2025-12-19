@@ -46,45 +46,35 @@ RIMBERIO 將「飼主-寵物 適配度」定義為 6 維向量空間，每個維
 
 ---
 
-## 問卷設計 (6 道題目)
+## 問卷與計分機制
 
-```
-Q1【活動力】
-   週末到了，你理想的行程是？
-   ✓ 登山/跑步/探險           → value=0.9 (高活動力)
-   ✓ 公園散步/逛街            → value=0.5 (中等活動力)
-   ✓ 在家追劇/睡覺            → value=0.1 (低活動力)
+### 30 道題目結構
 
-Q2【親人程度】
-   當你在家放鬆時，你希望寵物？
-   ✓ 黏在身上/討摸            → value=0.9 (高黏人度)
-   ✓ 待同房偶爾互動           → value=0.5 (中等黏人度)
-   ✓ 各做各的/不打擾          → value=0.2 (低黏人度)
+- **總計 30 道題目**，分為 6 個維度
+- **每個維度 5 道題目**，每題占 20% 的權重
+- 所有答案進行 **加權平均** 計算，而非簡單覆蓋
 
-Q3【獨立性】
-   你平日外出工作的時間平均多久？
-   ✓ 超過 10 小時            → value=0.9 (高獨立性需求)
-   ✓ 約 8 小時               → value=0.5 (中等獨立性需求)
-   ✓ 在家工作/時間多          → value=0.1 (低獨立性需求)
+### 計分公式
 
-Q4【空間需求】
-   你目前的居住環境大致是？
-   ✓ 透天/有大庭院           → value=0.9 (大空間)
-   ✓ 一般公寓(3房)           → value=0.5 (中等空間)
-   ✓ 小套房/雅房             → value=0.1 (小空間)
+$$\text{維度分數} = \frac{\sum (答案值 \times 0.2)}{1. 0} = \frac{\sum 答案值}{5}$$
 
-Q5【掉毛接受度】
-   對於家裡出現寵物毛髮？
-   ✓ 完全不行/過敏           → value=0.1 (不能接受)
-   ✓ 勤勞打掃就好            → value=0.5 (可以接受)
-   ✓ 毛是家飾一部分          → value=0.9 (完全接受)
+### 計分示例
 
-Q6【吵鬧程度】
-   關於寵物的叫聲，你的狀況是？
-   ✓ 隔音差/怕吵             → value=0.1 (需要安靜)
-   ✓ 住宅區/偶爾叫           → value=0.5 (普通住宅區)
-   ✓ 住鄉下/獨棟             → value=0.9 (可接受吵鬧)
-```
+假設用戶在「活動力」維度的回答：
+- Q1: 0.9 (weight:  0.2) → 貢獻 0.18
+- Q2: 0.5 (weight: 0.2) → 貢獻 0.10
+- Q3: 0.9 (weight: 0.2) → 貢獻 0.18
+- Q4: 0.7 (weight: 0.2) → 貢獻 0.14
+- Q5: 0.3 (weight: 0.2) → 貢獻 0.06
+
+**最終活動力分數 = (0.18 + 0.10 + 0.18 + 0.14 + 0.06) = 0.66**
+
+### 優勢
+
+- 綜合考慮多個角度
+- 防止單個極端答案主導結果
+- 推薦結果更精準
+- 用戶向量更真實
 
 ---
 
@@ -120,37 +110,37 @@ pip install -r requirements.txt
 
 ### 3️⃣ 設定 LINE 官方帳號 (Messaging API)
 
-#### A. 建立 LINE Developers 帳號
+#### A.建立 LINE Developers 帳號
 
-1. 前往 [LINE Developers Console](https://developers.line.biz/zh-hant/)
-2. 用 LINE 帳號登入 (沒有帳號請先申請)
-3. 點擊「Create」建立新的 Provider (如:  Rimberio)
+1.前往 [LINE Developers Console](https://developers.line.biz/zh-hant/)
+2.用 LINE 帳號登入 (沒有帳號請先申請)
+3.點擊「Create」建立新的 Provider (如:  Rimberio)
 
-#### B. 建立 Messaging API Channel
+#### B.建立 Messaging API Channel
 
-1. 在剛建立的 Provider 下，點擊「Create a new channel」
-2. 選擇 **Messaging API**
-3. 填寫以下資訊：
+1.在剛建立的 Provider 下，點擊「Create a new channel」
+2.選擇 **Messaging API**
+3.填寫以下資訊：
    - **Channel name**:  RIMBERIO Bot
    - **Channel description**: 寵物適性媒合系統
    - **Category**: 個人使用 (Personal Use)
    - **Subcategory**: 其他
-4. 同意服務條款，完成建立
+4.同意服務條款，完成建立
 
-#### C. 取得金鑰並關閉自動回覆
+#### C.取得金鑰並關閉自動回覆
 
 進入建立好的 Channel，分別前往：
 
-**1. Basic Settings 頁面**
+**1.Basic Settings 頁面**
    - 找到「Channel Secret」
    - 點擊「Copy」複製
 
-**2. Messaging API 頁面**
+**2.Messaging API 頁面**
    - 找到「Channel access token」
    - 點擊「Generate」或「Regenerate」
    - 點擊「Copy」複製
 
-**3. 關閉自動回覆**
+**3.關閉自動回覆**
    - 在 Messaging API 頁面找到 Auto-reply Messages 區塊
    - 點擊「Edit」
    - 將「Auto-response」設為 **Disabled** (停用)
@@ -184,13 +174,13 @@ INFO:     Application startup complete
 
 為了讓 LINE 伺服器能夠連到你的本機電腦，需要用 Ngrok 建立安全隧道。
 
-#### A. 下載並安裝 Ngrok
+#### A.下載並安裝 Ngrok
 
-1. 前往 [Ngrok 官網](https://ngrok.com/download)
-2. 下載對應你作業系統的版本
-3. 解壓縮到方便的位置 (如: C:\Tools\ngrok)
+1.前往 [Ngrok 官網](https://ngrok.com/download)
+2.下載對應你作業系統的版本
+3.解壓縮到方便的位置 (如: C:\Tools\ngrok)
 
-#### B. 啟動 Ngrok
+#### B.啟動 Ngrok
 
 **在新的終端機視窗中執行**：
 
@@ -223,15 +213,15 @@ https://1a2b-3c4d-5e6f.ngrok-free.app
 
 回到 [LINE Developers Console](https://developers.line.biz/zh-hant/)，在你的 Channel 的 **Messaging API** 頁面：
 
-1. 找到「Webhook URL」欄位
-2. 點擊「Edit」
-3. 貼上 Ngrok 網址 + `/callback`，例如：
+1.找到「Webhook URL」欄位
+2.點擊「Edit」
+3.貼上 Ngrok 網址 + `/callback`，例如：
    ```
    https://1a2b-3c4d-5e6f.ngrok-free.app/callback
    ```
-4. 點擊「Update」
-5. 在下方的「Use webhook」開關，確保已**開啟**
-6. 找到「Verify」按鈕，點擊驗證
+4.點擊「Update」
+5.在下方的「Use webhook」開關，確保已**開啟**
+6.找到「Verify」按鈕，點擊驗證
 
 如果顯示 **"Success"**，代表機器人已成功連線！
 
@@ -241,9 +231,9 @@ https://1a2b-3c4d-5e6f.ngrok-free.app
 
 ### 第一步：加入機器人好友
 
-1. 在 LINE Developers Console 的 Channel 頁面，找到 **QR Code**
-2. 用 LINE App 掃描 QR Code
-3. 點擊「加入」將機器人加為好友
+1.在 LINE Developers Console 的 Channel 頁面，找到 **QR Code**
+2.用 LINE App 掃描 QR Code
+3.點擊「加入」將機器人加為好友
 
 ### 第二步：開始測驗
 
@@ -255,7 +245,7 @@ https://1a2b-3c4d-5e6f.ngrok-free.app
 機器人會回覆：
 ```
 歡迎來到 RIMBERIO！
-我們將透過 6 個問題，幫你找到適合的寵物。
+我們將透過 30 個問題，幫你找到適合的寵物。
 
 準備好了嗎？讓我們開始吧！
 ```
@@ -267,10 +257,9 @@ https://1a2b-3c4d-5e6f.ngrok-free.app
 ```
 問題 1
 
-【Q1/6 活動力】
-週末到了，你理想的行程是？
+【Q1/30 活動力】 你每天能陪狗進行戶外活動多久？
 
-[登山/跑步/探險] [公園散步/逛街] [在家追劇/睡覺]
+[30分鐘以內] [30-90分鐘] [90分鐘以上]
 ```
 
 ### 第四步：接收推薦結果
@@ -334,10 +323,10 @@ match_score = max(0, (1 - distance) × 100%)
 
 ```python
 # 事件驅動流程
-1. LINE 使用者傳送訊息
-   └─> 2.   Ngrok 轉發到 /callback 端點
-       └─> 3. handler. handle() 解析簽名與事件
-           └─> 4. @handler.add() 路由分發
+1.LINE 使用者傳送訊息
+   └─> 2.  Ngrok 轉發到 /callback 端點
+       └─> 3.handler.handle() 解析簽名與事件
+           └─> 4.@handler.add() 路由分發
                ├─> MessageEvent (啟動測驗)
                │   └─> send_question() 發送第一題
                └─> PostbackEvent (回答題目)
@@ -361,7 +350,7 @@ match_score = max(0, (1 - distance) × 100%)
 LINE 整合層
 ├── line-bot-sdk==3.21.0      (LINE 官方 SDK)
 ├── aiohttp==3.13.2           (非同步 HTTP)
-└── websockets==15.0. 1        (WebSocket 支援)
+└── websockets==15.0.1        (WebSocket 支援)
 
 向量 DB 層
 ├── chromadb==1.3.6           (向量資料庫)
@@ -443,11 +432,12 @@ rimberio/
 │
 ├── data_model.py                 # 數據模型 & 向量DB 
 │   ├── DIMENSIONS[] - 6 維特徵定義
-│   ├── PET_DB[] - 5 隻寵物資料 (帶向量表示)
-│   ├── QUESTIONS[] - 6 道問卷題目
+│   ├── PET_DB[] - 80+ 隻寵物資料 (帶向量表示)
+│   ├── QUESTIONS[] - 30 道問卷題目 (6 維，每維 5 題)
+│   ├── validate_questions_weights() - 權重驗證
 │   └── ChromaDB 初始化 & get_recommendations()
 │
-├── requirements. txt             # 依賴套件清單 
+├── requirements.txt             # 依賴套件清單 
 ```
 
 ---
