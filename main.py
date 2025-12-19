@@ -40,6 +40,26 @@ line_bot_api = LineBotApi(channel_access_token)
 handler = WebhookHandler(channel_secret)
 user_sessions = {}  # 存放使用者測驗進度與向量
 
+def calculate_weighted_average(user_session):
+    """
+    計算每個維度的加權平均值
+    """
+    final_vector = []
+    for dim_index in range(6):
+        answers = user_session['dimension_answers'][dim_index]
+        weights = user_session['dimension_weights'][dim_index]
+        
+        if len(answers) == 0:
+            final_vector.append(0.5)
+        else:
+            weighted_sum = sum(a * w for a, w in zip(answers, weights))
+            total_weight = sum(weights)
+            dimension_value = weighted_sum / total_weight if total_weight > 0 else 0.5
+            dimension_value = max(0.0, min(1.0, dimension_value))
+            final_vector.append(dimension_value)
+    
+    return final_vector
+
 def send_question(user_id, question_index):
     if question_index >= len(data_model.QUESTIONS):
         return
@@ -148,10 +168,12 @@ def handle_message(event):
         # 初始化使用者狀態
         user_sessions[user_id] = {
             'step': 0,
-            'vector': [0.5] * 6
+            'vector': [0.5] * 6,
+            'dimension_answers': {i: [] for i in range(6)},
+            'dimension_weights': {i: [] for i in range(6)}
         }
         
-        reply = "歡迎來到 RIMBERIO！\n我們將透過 6 個問題，幫你找到靈魂伴侶。\n準備好了嗎？"
+        reply = "歡迎來到 RIMBERIO！\n我們將透過 30 個問題，幫你找到靈魂伴侶。\n準備好了嗎？"
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply))
         send_question(user_id, 0)
     else:
@@ -172,9 +194,13 @@ def handle_postback(event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(text="連線逾時，請輸入「開始」重新測驗。"))
         return
 
-    # 更新向量分數
-    dim_index = data_model.QUESTIONS[q_index]['dimension_index']
-    user_sessions[user_id]['vector'][dim_index] = val
+    # 累加答案和權重
+    question = data_model.QUESTIONS[q_index]
+    dim_index = question['dimension_index']
+    weight = question['weight']
+    
+    user_sessions[user_id]['dimension_answers'][dim_index].append(val)
+    user_sessions[user_id]['dimension_weights'][dim_index].append(weight)
     
     # 進入下一題
     next_step = q_index + 1
@@ -183,7 +209,8 @@ def handle_postback(event):
     if next_step < len(data_model.QUESTIONS):
         send_question(user_id, next_step)
     else:
-        # 題目問完了，顯示結果
-        final_vector = user_sessions[user_id]['vector']
+        # 題目問完了，計算加權平均並顯示結果
+        final_vector = calculate_weighted_average(user_sessions[user_id])
+        user_sessions[user_id]['vector'] = final_vector
         print(f"User {user_id} vector: {final_vector}")
         show_recommendation(user_id, final_vector)
