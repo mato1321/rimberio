@@ -514,6 +514,7 @@ QUESTIONS = [
     {
         "id": "q1",
         "dimension_index": 0,
+        "weight": 0.2,
         "text": "【Q1/30 活動力】\n你每天能陪狗進行戶外活動多久？",
         "options": [
             {
@@ -536,6 +537,7 @@ QUESTIONS = [
     {
         "id": "q2",
         "dimension_index": 0,
+        "weight": 0.2,
         "text": "【Q2/30 活動力】\n週末假日你通常偏好哪種休閒方式？",
         "options": [
             {
@@ -558,6 +560,7 @@ QUESTIONS = [
     {
         "id": "q3",
         "dimension_index": 0,
+        "weight": 0.2,
         "text": "【Q3/30 活動力】\n你能接受狗狗在家中也保持高度活躍（如跑酷）嗎？",
         "options": [
             {
@@ -580,6 +583,7 @@ QUESTIONS = [
     {
         "id": "q4",
         "dimension_index": 0,
+        "weight": 0.2,
         "text": "【Q4/30 活動力】\n若狗狗精力過剩需要每天玩拋接球 30 分鐘，你的意願是？",
         "options": [
             {
@@ -602,6 +606,7 @@ QUESTIONS = [
     {
         "id": "q5",
         "dimension_index": 0,
+        "weight": 0.2,
         "text": "【Q5/30 活動力】\n你希望狗狗在戶外是跟隨腳步走，還是盡情奔跑探索？",
         "options": [
             {
@@ -624,6 +629,7 @@ QUESTIONS = [
     {
         "id": "q6",
         "dimension_index": 1,
+        "weight": 0.2,
         "text": "【Q6/30 親人程度】\n你希望狗狗多常主動與你互動？",
         "options": [
             {
@@ -646,6 +652,7 @@ QUESTIONS = [
     {
         "id": "q7",
         "dimension_index": 1,
+        "weight": 0.2,
         "text": "【Q7/30 親人程度】\n當你在家工作或休息時，你希望狗狗在哪裡？",
         "options": [
             {
@@ -668,6 +675,7 @@ QUESTIONS = [
     {
         "id": "q8",
         "dimension_index": 1,
+        "weight": 0.2,
         "text": "【Q8/30 親人程度】\n你能接受狗狗像「跟屁蟲」一樣，連去廁所都要跟著嗎？",
         "options": [
             {
@@ -690,6 +698,7 @@ QUESTIONS = [
     {
         "id": "q9",
         "dimension_index": 1,
+        "weight": 0.2,
         "text": "【Q9/30 親人程度】\n對於狗狗主動討摸或舔人的行為，你的接受度是？",
         "options": [
             {
@@ -712,6 +721,7 @@ QUESTIONS = [
     {
         "id": "q10",
         "dimension_index": 1,
+        "weight": 0.2,
         "text": "【Q10/30 親人程度】\n你希望這隻狗是對陌生人也熱情，還是只對家人親近？",
         "options": [
             {
@@ -734,6 +744,7 @@ QUESTIONS = [
     {
         "id": "q11",
         "dimension_index": 2,
+        "weight": 0.2,
         "text": "【Q11/30 獨立性】\n你能接受狗狗長時間自行待在家中嗎？",
         "options": [
             {
@@ -756,6 +767,7 @@ QUESTIONS = [
     {
         "id": "q12",
         "dimension_index": 2,
+        "weight": 0.2,
         "text": "【Q12/30 獨立性】\n你每週平均有多少天需要讓狗狗獨自在家超過 8 小時？",
         "options": [
             {
@@ -778,6 +790,7 @@ QUESTIONS = [
     {
         "id": "q13",
         "dimension_index": 2,
+        "weight": 0.2,
         "text": "【Q13/30 獨立性】\n當你出門時，你希望狗狗的反應是？",
         "options": [
             {
@@ -800,6 +813,7 @@ QUESTIONS = [
     {
         "id": "q14",
         "dimension_index": 2,
+        "weight": 0.2,
         "text": "【Q14/30 獨立性】\n你的工作性質是否允許你隨時回家查看或帶狗上班？",
         "options": [
             {
@@ -822,6 +836,7 @@ QUESTIONS = [
     {
         "id": "q15",
         "dimension_index": 2,
+        "weight": 0.2,
         "text": "【Q15/30 獨立性】\n你能接受狗狗個性較為自我，不一定隨叫隨到嗎？",
         "options": [
             {
@@ -844,6 +859,7 @@ QUESTIONS = [
     {
         "id": "q16",
         "dimension_index": 3,
+        "weight": 0.2,
         "text": "【Q16/30 空間需求】\n你的居住空間是否適合中大型犬活動？",
         "options": [
             {
@@ -866,6 +882,7 @@ QUESTIONS = [
     {
         "id": "q17",
         "dimension_index": 3,
+        "weight": 0.2,
         "text": "【Q17/30 空間需求】\n你的居住環境是否有電梯？",
         "options": [
             {
@@ -888,6 +905,7 @@ QUESTIONS = [
     {
         "id": "q18",
         "dimension_index": 3,
+        "weight": 0.2,
         "text": "【Q18/30 空間需求】\n家中是否有專屬的庭院或陽台供狗狗活動？",
         "options": [
             {
@@ -910,6 +928,7 @@ QUESTIONS = [
     {
         "id": "q19",
         "dimension_index": 3,
+        "weight": 0.2,
         "text": "【Q19/30 空間需求】\n你能接受家中擺放大型狗籠或佔據沙發大部分空間嗎？",
         "options": [
             {
@@ -932,6 +951,7 @@ QUESTIONS = [
     {
         "id": "q20",
         "dimension_index": 3,
+        "weight": 0.2,
         "text": "【Q20/30 空間需求】\n若狗狗尾巴橫掃容易打翻茶几上的物品，你的接受度是？",
         "options": [
             {
@@ -954,6 +974,7 @@ QUESTIONS = [
     {
         "id": "q21",
         "dimension_index": 4,
+        "weight": 0.2,
         "text": "【Q21/30 掉毛程度】\n你能接受定期為狗狗進行毛髮整理嗎？",
         "options": [
             {
@@ -976,6 +997,7 @@ QUESTIONS = [
     {
         "id": "q22",
         "dimension_index": 4,
+        "weight": 0.2,
         "text": "【Q22/30 掉毛程度】\n對於家中地板或衣服上出現狗毛的忍受程度？",
         "options": [
             {
@@ -998,6 +1020,7 @@ QUESTIONS = [
     {
         "id": "q23",
         "dimension_index": 4,
+        "weight": 0.2,
         "text": "【Q23/30 掉毛程度】\n你願意每個月花多少預算或時間在狗狗的美容洗澡上？",
         "options": [
             {
@@ -1020,6 +1043,7 @@ QUESTIONS = [
     {
         "id": "q24",
         "dimension_index": 4,
+        "weight": 0.2,
         "text": "【Q24/30 掉毛程度】\n你能接受狗狗有口水較多或嘴邊毛易髒的特質嗎？",
         "options": [
             {
@@ -1042,6 +1066,7 @@ QUESTIONS = [
     {
         "id": "q25",
         "dimension_index": 4,
+        "weight": 0.2,
         "text": "【Q25/30 掉毛程度】\n你是否對狗毛或皮屑有過敏體質？",
         "options": [
             {
@@ -1064,6 +1089,7 @@ QUESTIONS = [
     {
         "id": "q26",
         "dimension_index": 5,
+        "weight": 0.2,
         "text": "【Q26/30 吵鬧程度】\n你能接受狗吠或嚎叫對生活造成影響嗎？",
         "options": [
             {
@@ -1086,6 +1112,7 @@ QUESTIONS = [
     {
         "id": "q27",
         "dimension_index": 5,
+        "weight": 0.2,
         "text": "【Q27/30 吵鬧程度】\n你的居住環境隔音效果如何？",
         "options": [
             {
@@ -1108,6 +1135,7 @@ QUESTIONS = [
     {
         "id": "q28",
         "dimension_index": 5,
+        "weight": 0.2,
         "text": "【Q28/30 吵鬧程度】\n當有快遞或陌生人經過門口時，你希望狗狗的反應是？",
         "options": [
             {
@@ -1130,6 +1158,7 @@ QUESTIONS = [
     {
         "id": "q29",
         "dimension_index": 5,
+        "weight": 0.2,
         "text": "【Q29/30 吵鬧程度】\n你能忍受狗狗在興奮或玩耍時發出明顯的聲音嗎？",
         "options": [
             {
@@ -1152,6 +1181,7 @@ QUESTIONS = [
     {
         "id": "q30",
         "dimension_index": 5,
+        "weight": 0.2,
         "text": "【Q30/30 吵鬧程度】\n對於需要花時間訓練狗狗「安靜」這件事，你的耐心程度？",
         "options": [
             {
