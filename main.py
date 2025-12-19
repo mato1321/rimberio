@@ -54,7 +54,8 @@ def calculate_weighted_average(user_session):
         else:
             weighted_sum = sum(a * w for a, w in zip(answers, weights))
             total_weight = sum(weights)
-            dimension_value = weighted_sum / total_weight if total_weight > 0 else 0.5
+            dimension_value = weighted_sum / total_weight
+            # Clamp to [0.0, 1.0] range for safety (though values should already be within bounds)
             dimension_value = max(0.0, min(1.0, dimension_value))
             final_vector.append(dimension_value)
     
