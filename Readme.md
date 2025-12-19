@@ -56,7 +56,7 @@ RIMBERIO 將「飼主-寵物 適配度」定義為 6 維向量空間，每個維
 
 ### 計分公式
 
-$$\text{維度分數} = \frac{\sum (答案值 \times 0.2)}{1. 0} = \frac{\sum 答案值}{5}$$
+$$\text{維度分數} = \frac{\sum (答案值 \times 0.2)}{1.0} = \frac{\sum 答案值}{5}$$
 
 ### 計分示例
 
@@ -324,7 +324,7 @@ match_score = max(0, (1 - distance) × 100%)
 ```python
 # 事件驅動流程
 1.LINE 使用者傳送訊息
-   └─> 2.  Ngrok 轉發到 /callback 端點
+   └─> 2.Ngrok 轉發到 /callback 端點
        └─> 3.handler.handle() 解析簽名與事件
            └─> 4.@handler.add() 路由分發
                ├─> MessageEvent (啟動測驗)
