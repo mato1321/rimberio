@@ -1,5 +1,4 @@
 import chromadb
-# 核心維度定義 ---
 DIMENSIONS = [
     "Activity",      # 0: 活動力
     "Affection",     # 1: 親人程度
@@ -8,10 +7,9 @@ DIMENSIONS = [
     "Grooming",      # 4: 掉毛程度
     "Noise"          # 5: 吵鬧程度
 ]
-# 寵物模擬資料庫
-# 寵物模擬資料庫（台灣常見品種）
+
 PET_DB = [
-    # ==================== 🐶 狗狗品種 ====================
+    # 狗狗品種
     {
         "id": "1",
         "name": "柴犬",
@@ -152,7 +150,7 @@ PET_DB = [
         "vector": [0.8, 0.5, 0.3, 0.7, 0.3, 0.4],
         "desc": "最聰慧的犬種，需要大量運動和心理刺激，適合有時間的飼主。"
     },
-    # ==================== 🐱 貓咪品種 ====================
+    # 貓咪品種
     {
         "id": "21",
         "name": "英國短毛貓",
@@ -294,19 +292,19 @@ PET_DB = [
         "desc": "大型長毛貓，親人友善，適應台灣氣候。"
     }
 ]
-
 # 問卷題目設計
 QUESTIONS = [
+    # ==================== 維度 0:  活動力 ====================
     {
         "id": "q1",
-        "dimension_index":  0,
-        "weight":  0.2,
-        "text": "【Q1/30 活動力】\n你每天能陪寵物進行活動多久？",
-        "options":  [
+        "dimension_index": 0,
+        "weight": 0.5,
+        "text": "【Q1/12 活動力】\n你每天能陪寵物進行活動多久？",
+        "options": [
             {
                 "label": "30分鐘以內",
                 "value": 0.1,
-                "text":  "較低程度"
+                "text": "較低程度"
             },
             {
                 "label": "30-90分鐘",
@@ -323,54 +321,8 @@ QUESTIONS = [
     {
         "id": "q2",
         "dimension_index":  0,
-        "weight": 0.2,
-        "text":  "【Q2/30 活動力】\n週末假日你通常偏好哪種休閒方式？",
-        "options":  [
-            {
-                "label": "在家休息",
-                "value": 0.1,
-                "text":  "靜態休息"
-            },
-            {
-                "label": "附近活動散步",
-                "value": 0.5,
-                "text":  "輕鬆活動"
-            },
-            {
-                "label":  "長途登山或跑步",
-                "value":  0.9,
-                "text": "高強度運動"
-            }
-        ]
-    },
-    {
-        "id": "q3",
-        "dimension_index": 0,
-        "weight": 0.2,
-        "text": "【Q3/30 活動力】\n你能接受寵物在家中也保持活躍（跑動、跳跳）嗎？",
-        "options": [
-            {
-                "label": "希望牠安靜點",
-                "value": 0.1,
-                "text":  "不接受"
-            },
-            {
-                "label": "偶爾可以",
-                "value": 0.5,
-                "text": "尚可接受"
-            },
-            {
-                "label": "完全沒問題",
-                "value": 0.9,
-                "text": "非常接受"
-            }
-        ]
-    },
-    {
-        "id": "q4",
-        "dimension_index":  0,
-        "weight":  0.2,
-        "text": "【Q4/30 活動力】\n若寵物精力過剩需要每天玩耍 30 分鐘，你的意願是？",
+        "weight":  0.5,
+        "text": "【Q2/12 活動力】\n若寵物精力過剩需要每天玩耍 30 分鐘，你的意願是？",
         "options": [
             {
                 "label":  "太累了",
@@ -389,34 +341,12 @@ QUESTIONS = [
             }
         ]
     },
+    # ==================== 維度 1: 親人程度 ====================
     {
-        "id": "q5",
-        "dimension_index": 0,
-        "weight": 0.2,
-        "text": "【Q5/30 活動力】\n你希望寵物是沉靜安靜，還是活潑好動？",
-        "options": [
-            {
-                "label": "沉靜安靜",
-                "value": 0.1,
-                "text": "低活動力"
-            },
-            {
-                "label": "適度活動",
-                "value": 0.5,
-                "text": "中等活動"
-            },
-            {
-                "label": "活潑好動",
-                "value": 0.9,
-                "text": "高活動力"
-            }
-        ]
-    },
-    {
-        "id": "q6",
-        "dimension_index": 1,
-        "weight": 0.2,
-        "text":  "【Q6/30 親人程度】\n你希望寵物多常主動與你互動？",
+        "id": "q3",
+        "dimension_index":  1,
+        "weight":  0.5,
+        "text": "【Q3/12 親人程度】\n你希望寵物多常主動與你互動？",
         "options": [
             {
                 "label": "偶爾就好",
@@ -426,7 +356,7 @@ QUESTIONS = [
             {
                 "label": "每天幾次",
                 "value": 0.5,
-                "text": "中等程度"
+                "text":  "中等程度"
             },
             {
                 "label": "隨時隨地",
@@ -436,18 +366,18 @@ QUESTIONS = [
         ]
     },
     {
-        "id": "q7",
-        "dimension_index":  1,
-        "weight":  0.2,
-        "text": "【Q7/30 親人程度】\n當你在家工作或休息時，你希望寵物在哪裡？",
+        "id": "q4",
+        "dimension_index": 1,
+        "weight": 0.5,
+        "text": "【Q4/12 親人程度】\n當你在家時，你希望寵物在哪裡？",
         "options":  [
             {
                 "label": "在另一個房間",
-                "value":  0.1,
+                "value": 0.1,
                 "text": "保持距離"
             },
             {
-                "label": "在腳邊趴著",
+                "label": "在腳邊陪著",
                 "value":  0.5,
                 "text": "適度陪伴"
             },
@@ -458,107 +388,16 @@ QUESTIONS = [
             }
         ]
     },
+    # ==================== 維度 2: 獨立性 ====================
     {
-        "id": "q8",
-        "dimension_index": 1,
-        "weight": 0.2,
-        "text": "【Q8/30 親人程度】\n你能接受寵物像「跟屁蟲」一樣，連去廁所都要跟著嗎？",
-        "options": [
-            {
-                "label": "覺得煩",
-                "value": 0.1,
-                "text": "無法接受"
-            },
-            {
-                "label": "無所謂",
-                "value":  0.5,
-                "text": "可以接受"
-            },
-            {
-                "label": "覺得很可愛",
-                "value": 0.9,
-                "text": "非常喜歡"
-            }
-        ]
-    },
-    {
-        "id": "q9",
-        "dimension_index":  1,
-        "weight":  0.2,
-        "text": "【Q9/30 親人程度】\n對於寵物主動親近（蹭、舔、搭爪）的行為，你的接受度是？",
-        "options":  [
-            {
-                "label": "不太接受",
-                "value":  0.1,
-                "text": "低接受度"
-            },
-            {
-                "label": "看心情",
-                "value": 0.5,
-                "text": "中接受度"
-            },
-            {
-                "label": "來者不拒",
-                "value": 0.9,
-                "text": "高接受度"
-            }
-        ]
-    },
-    {
-        "id": "q10",
-        "dimension_index": 1,
-        "weight": 0.2,
-        "text": "【Q10/30 親人程度】\n你希望寵物是對陌生人也熱情，還是只對家人親近？",
-        "options":  [
-            {
-                "label": "只對家人好",
-                "value": 0.1,
-                "text":  "忠誠護主"
-            },
-            {
-                "label": "看情況",
-                "value": 0.5,
-                "text": "中庸之道"
-            },
-            {
-                "label": "人人好",
-                "value": 0.9,
-                "text":  "熱情公關"
-            }
-        ]
-    },
-    {
-        "id": "q11",
-        "dimension_index": 2,
-        "weight": 0.2,
-        "text":  "【Q11/30 獨立性】\n你能接受寵物長時間自行待在家中嗎？",
-        "options": [
-            {
-                "label": "希望牠有人陪",
-                "value": 0.1,
-                "text": "較低程度"
-            },
-            {
-                "label": "半天可以",
-                "value": 0.5,
-                "text": "中等程度"
-            },
-            {
-                "label": "一整天沒問題",
-                "value": 0.9,
-                "text": "較高程度"
-            }
-        ]
-    },
-    {
-        "id": "q12",
+        "id": "q5",
         "dimension_index":  2,
-        "weight":  0.2,
-        "text": "【Q12/30 獨立性】\n你每週平均有多少天需要讓寵物獨自在家超過 8 小時？",
+        "weight":  0.5,
+        "text": "【Q5/12 獨立性】\n你每週有多少天需要讓寵物獨自在家超過 8 小時？",
         "options": [
             {
                 "label": "幾乎沒有",
-                "value": 0.1,
+                "value":  0.1,
                 "text": "很少獨處"
             },
             {
@@ -574,13 +413,13 @@ QUESTIONS = [
         ]
     },
     {
-        "id": "q13",
+        "id": "q6",
         "dimension_index": 2,
-        "weight": 0.2,
-        "text": "【Q13/30 獨立性】\n當你出門時，你希望寵物的反應是？",
+        "weight": 0.5,
+        "text": "【Q6/12 獨立性】\n當你出門時，你希望寵物的反應是？",
         "options": [
             {
-                "label": "焦慮不安",
+                "label":  "焦慮不安",
                 "value": 0.1,
                 "text": "依賴心強"
             },
@@ -596,195 +435,59 @@ QUESTIONS = [
             }
         ]
     },
+    # ==================== 維度 3: 空間需求 ====================
     {
-        "id": "q14",
-        "dimension_index": 2,
-        "weight": 0.2,
-        "text": "【Q14/30 獨立性】\n你的工作性質是否允許你隨時回家查看或帶寵物上班？",
-        "options": [
-            {
-                "label":  "完全允許",
-                "value": 0.1,
-                "text": "陪伴時間多"
-            },
-            {
-                "label": "偶爾可以",
-                "value": 0.5,
-                "text": "彈性普通"
-            },
-            {
-                "label": "完全不行",
-                "value": 0.9,
-                "text":  "陪伴時間少"
-            }
-        ]
-    },
-    {
-        "id":  "q15",
-        "dimension_index": 2,
-        "weight": 0.2,
-        "text": "【Q15/30 獨立性】\n你能接受寵物個性較為自我，不一定隨叫隨到嗎？",
-        "options": [
-            {
-                "label": "希望隨叫隨到",
-                "value": 0.1,
-                "text": "低接受度"
-            },
-            {
-                "label": "偶爾自我可以",
-                "value": 0.5,
-                "text":  "中接受度"
-            },
-            {
-                "label": "很有個性也好",
-                "value": 0.9,
-                "text":  "高接受度"
-            }
-        ]
-    },
-    {
-        "id": "q16",
+        "id": "q7",
         "dimension_index": 3,
-        "weight": 0.2,
-        "text":  "【Q16/30 空間需求】\n你的居住空間是否適合寵物活動？",
-        "options":  [
+        "weight": 0.5,
+        "text": "【Q7/12 空間需求】\n你的居住空間如何？",
+        "options": [
             {
                 "label": "空間狹小",
                 "value":  0.1,
-                "text": "較低程度"
+                "text": "小公寓"
             },
             {
                 "label": "空間適中",
                 "value": 0.5,
-                "text": "中等程度"
+                "text": "普通住宅"
             },
             {
                 "label": "空間寬敞",
                 "value": 0.9,
-                "text": "較高程度"
+                "text": "大房子"
             }
         ]
     },
     {
-        "id": "q17",
-        "dimension_index":  3,
-        "weight":  0.2,
-        "text": "【Q17/30 空間需求】\n你的居住環境是否有電梯或低樓層？",
-        "options": [
-            {
-                "label": "無電梯高樓層",
-                "value": 0.1,
-                "text":  "不便利"
-            },
-            {
-                "label": "低樓層或有電梯",
-                "value":  0.5,
-                "text": "中等便利"
-            },
-            {
-                "label": "有電梯或透天",
-                "value": 0.9,
-                "text": "很便利"
-            }
-        ]
-    },
-    {
-        "id": "q18",
+        "id": "q8",
         "dimension_index": 3,
-        "weight": 0.2,
-        "text":  "【Q18/30 空間需求】\n家中是否有專屬的戶外空間（庭院或陽台）？",
-        "options":  [
-            {
-                "label": "都沒有",
-                "value": 0.1,
-                "text": "無戶外空間"
-            },
-            {
-                "label":  "小陽台",
-                "value": 0.5,
-                "text": "小空間"
-            },
-            {
-                "label": "大庭院",
-                "value": 0.9,
-                "text":  "大空間"
-            }
-        ]
-    },
-    {
-        "id": "q19",
-        "dimension_index": 3,
-        "weight": 0.2,
-        "text": "【Q19/30 空間需求】\n你能接受家中為了寵物擺放籠子或佔據生活空間嗎？",
+        "weight": 0.5,
+        "text": "【Q8/12 空間需求】\n你能接受家中為了寵物擺放籠子或佔據生活空間嗎？",
         "options": [
             {
                 "label": "沒地方放",
-                "value": 0.1,
-                "text":  "無法接受"
+                "value":  0.1,
+                "text": "無法接受"
             },
             {
                 "label": "喬一下可以",
                 "value": 0.5,
-                "text": "勉強接受"
+                "text":  "勉強接受"
             },
             {
-                "label":  "為了寵物可以",
+                "label": "為了寵物可以",
                 "value": 0.9,
                 "text": "完全接受"
             }
         ]
     },
+    # ==================== 維度 4: 掉毛程度 ====================
     {
-        "id":  "q20",
-        "dimension_index": 3,
-        "weight": 0.2,
-        "text": "【Q20/30 空間需求】\n若寵物活動時容易打翻家中物品，你的接受度是？",
-        "options": [
-            {
-                "label": "會很崩潰",
-                "value": 0.1,
-                "text": "低忍受度"
-            },
-            {
-                "label": "收好東西就好",
-                "value": 0.5,
-                "text": "中忍受度"
-            },
-            {
-                "label": "習慣就好",
-                "value": 0.9,
-                "text": "高忍受度"
-            }
-        ]
-    },
-    {
-        "id": "q21",
+        "id": "q9",
         "dimension_index": 4,
-        "weight": 0.2,
-        "text":  "【Q21/30 掉毛程度】\n你能接受定期為寵物進行毛髮整理嗎？",
-        "options": [
-            {
-                "label": "沒時間/不想",
-                "value": 0.1,
-                "text":  "較低程度"
-            },
-            {
-                "label": "偶爾梳理",
-                "value": 0.5,
-                "text":  "中等程度"
-            },
-            {
-                "label": "經常梳理",
-                "value": 0.9,
-                "text": "較高程度"
-            }
-        ]
-    },
-    {
-        "id": "q22",
-        "dimension_index":  4,
-        "weight":  0.2,
-        "text": "【Q22/30 掉毛程度】\n對於家中地板或衣服上出現寵物毛髮的忍受程度？",
+        "weight": 0.5,
+        "text": "【Q9/12 掉毛程度】\n對於家中出現寵物毛髮，你的忍受程度？",
         "options": [
             {
                 "label": "完全不能接受",
@@ -797,17 +500,17 @@ QUESTIONS = [
                 "text": "普通"
             },
             {
-                "label": "視為養寵物日常",
+                "label": "視為日常",
                 "value": 0.9,
                 "text": "無所謂"
             }
         ]
     },
     {
-        "id": "q23",
-        "dimension_index":  4,
-        "weight":  0.2,
-        "text": "【Q23/30 掉毛程度】\n你願意每個月花多少預算或時間在寵物的美容上？",
+        "id": "q10",
+        "dimension_index": 4,
+        "weight": 0.5,
+        "text": "【Q10/12 掉毛程度】\n你願意每個月花多少預算在寵物美容上？",
         "options": [
             {
                 "label": "越少越好",
@@ -816,7 +519,7 @@ QUESTIONS = [
             },
             {
                 "label": "適度花費",
-                "value": 0.5,
+                "value":  0.5,
                 "text": "中預算"
             },
             {
@@ -826,57 +529,12 @@ QUESTIONS = [
             }
         ]
     },
+    # ==================== 維度 5: 吵鬧程度 ====================
     {
-        "id": "q24",
-        "dimension_index": 4,
-        "weight": 0.2,
-        "text": "【Q24/30 掉毛程度】\n你能接受寵物有分泌物（口水、眼淚等）或毛髮容易髒的特質嗎？",
-        "options": [
-            {
-                "label": "覺得不適",
-                "value": 0.1,
-                "text":  "無法接受"
-            },
-            {
-                "label": "擦擦就好",
-                "value": 0.5,
-                "text": "尚可接受"
-            },
-            {
-                "label":  "完全不介意",
-                "value": 0.9,
-                "text": "非常接受"
-            }
-        ]
-    },
-    {
-        "id": "q25",
-        "dimension_index":  4,
-        "weight":  0.2,
-        "text": "【Q25/30 掉毛程度】\n你是否對寵物毛髮或皮屑有過敏體質？",
-        "options":  [
-            {
-                "label": "嚴重過敏",
-                "value": 0.1,
-                "text": "非常敏感"
-            },
-            {
-                "label": "輕微過敏",
-                "value": 0.5,
-                "text": "輕微敏感"
-            },
-            {
-                "label": "完全不過敏",
-                "value":  0.9,
-                "text": "不敏感"
-            }
-        ]
-    },
-    {
-        "id": "q26",
-        "dimension_index":  5,
-        "weight": 0.2,
-        "text":  "【Q26/30 吵鬧程度】\n你能接受寵物發出聲音（吠叫、喵叫等）對生活造成影響嗎？",
+        "id":  "q11",
+        "dimension_index": 5,
+        "weight": 0.5,
+        "text": "【Q11/12 吵鬧程度】\n你能接受寵物發出聲音對生活造成影響嗎？",
         "options": [
             {
                 "label": "完全不能",
@@ -886,20 +544,20 @@ QUESTIONS = [
             {
                 "label": "偶爾可以",
                 "value": 0.5,
-                "text": "中等程度"
+                "text":  "中等程度"
             },
             {
                 "label": "習慣了",
                 "value": 0.9,
-                "text": "較高程度"
+                "text":  "較高程度"
             }
         ]
     },
     {
-        "id": "q27",
+        "id": "q12",
         "dimension_index":  5,
-        "weight":  0.2,
-        "text": "【Q27/30 吵鬧程度】\n你的居住環境隔音效果如何？",
+        "weight":  0.5,
+        "text": "【Q12/12 吵鬧程度】\n你的居住環境隔音效果如何？",
         "options": [
             {
                 "label": "隔音差/怕投訴",
@@ -915,75 +573,6 @@ QUESTIONS = [
                 "label": "獨棟/不怕吵",
                 "value": 0.9,
                 "text": "隔音好"
-            }
-        ]
-    },
-    {
-        "id": "q28",
-        "dimension_index": 5,
-        "weight": 0.2,
-        "text": "【Q28/30 吵鬧程度】\n當有訪客或陌生人經過時，你希望寵物的反應是？",
-        "options": [
-            {
-                "label": "安靜忽視",
-                "value": 0.1,
-                "text":  "安靜"
-            },
-            {
-                "label": "低調警戒",
-                "value": 0.5,
-                "text": "警戒"
-            },
-            {
-                "label": "熱情迎接",
-                "value":  0.9,
-                "text": "熱情"
-            }
-        ]
-    },
-    {
-        "id":  "q29",
-        "dimension_index": 5,
-        "weight": 0.2,
-        "text": "【Q29/30 吵鬧程度】\n你能忍受寵物在興奮或玩耍時發出明顯的聲音嗎？",
-        "options": [
-            {
-                "label": "希望安靜玩",
-                "value": 0.1,
-                "text": "低忍受"
-            },
-            {
-                "label": "適度聲音",
-                "value":  0.5,
-                "text": "中忍受"
-            },
-            {
-                "label": "熱鬧點好",
-                "value": 0.9,
-                "text":  "高忍受"
-            }
-        ]
-    },
-    {
-        "id": "q30",
-        "dimension_index": 5,
-        "weight": 0.2,
-        "text": "【Q30/30 吵鬧程度】\n對於需要花時間訓練寵物「安靜」這件事，你的耐心程度？",
-        "options": [
-            {
-                "label": "沒耐心",
-                "value": 0.1,
-                "text":  "低耐心"
-            },
-            {
-                "label": "願意嘗試",
-                "value": 0.5,
-                "text": "中耐心"
-            },
-            {
-                "label": "非常有耐心",
-                "value": 0.9,
-                "text": "高耐心"
             }
         ]
     }
@@ -1017,18 +606,9 @@ def get_recommendations(user_vector, n_results=3):
 
 
 def get_recommendations_with_type(user_vector, n_results=3, pet_type=None):
-    """
-    根據寵物類型獲取推薦
-    
-    : param user_vector: 用戶的 6 維向量
-    :param n_results: 推薦數量
-    :param pet_type: 寵物類型 ("dog", "cat", or None for all)
-    :return: 推薦列表
-    """
     # 如果指定類型，先過濾
     if pet_type:
         filtered_pets = [p for p in PET_DB if p.get("type") == pet_type]
-        
         # 重新創建或更新 ChromaDB collection
         temp_collection_name = f"rimberio_pets_{pet_type}"
         try:
@@ -1071,44 +651,32 @@ def validate_questions_weights():
         weight = q.get('weight', 0.0)
         dimension_weights[dim] += weight
         dimension_count[dim] += 1
-    
-    print("\n" + "="*50)
-    print("📋 權重驗證結果")
     print("="*50)
-    
     errors = []
     for dim in range(6):
         total_weight = dimension_weights[dim]
         count = dimension_count[dim]
-        status = "✅" if abs(total_weight - 1.0) < 0.01 else "❌"
-        
-        print(f"{status} 維度 {dim}: {count} 題，權重總和 = {total_weight:.4f}")
-        
+        print(f"維度 {dim}: {count} 題，權重總和 = {total_weight:.4f}")
         if abs(total_weight - 1.0) > 0.01:
             errors.append(f"維度 {dim}:  權重總和 = {total_weight:.4f} (應為 1.0)")
-    
     print("="*50)
-    
     if errors:
-        print("❌ 權重驗證失敗：")
+        print("權重驗證失敗：")
         for error in errors:
             print(f"  - {error}")
         return False
     else:
-        print("✅ 所有維度的權重配置正確！")
+        print("所有維度的權重配置正確")
         return True
     
     
 def validate_pet_types():
     """驗證所有寵物都有正確的 type 字段"""
-    print("\n" + "="*50)
-    print("🐾 寵物類型驗證")
     print("="*50)
-    
+    print("寵物類型驗證")
     dog_count = 0
     cat_count = 0
     unknown_count = 0
-    
     for pet in PET_DB:
         pet_type = pet.get('type', 'unknown')
         if pet_type == 'dog': 
@@ -1117,12 +685,10 @@ def validate_pet_types():
             cat_count += 1
         else: 
             unknown_count += 1
-            print(f"⚠️  {pet['name']} 的 type 為 {pet_type}")
-    
-    print(f"✅ 狗狗:  {dog_count} 隻")
-    print(f"✅ 貓咪: {cat_count} 隻")
+            print(f"{pet['name']} 的 type 為 {pet_type}")
+    print(f"狗狗: {dog_count} 隻")
+    print(f"貓咪: {cat_count} 隻")
     if unknown_count > 0:
-        print(f"❌ 未分類:  {unknown_count} 隻")
+        print(f"未分類:  {unknown_count} 隻")
     print("="*50 + "\n")
-    
     return dog_count > 0 and cat_count > 0 and unknown_count == 0
