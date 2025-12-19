@@ -89,7 +89,7 @@ def send_question(user_id, question_index):
     template_message = TemplateSendMessage(
         alt_text=q_data['text'],
         template=ButtonsTemplate(
-            title=f"問題 {question_index + 1}/30",
+            title=f"問題 {question_index + 1}/12",
             text=q_data['text'],
             actions=actions
         )
