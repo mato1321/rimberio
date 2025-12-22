@@ -9,7 +9,17 @@
 **RIMBERIO** 是一個基於 LINE Chatbot 的智慧領養顧問，結合向量空間演算法與 ChromaDB 向量數據庫，透過「6 維適性媒合推薦模型」，為飼主精準推薦最適合的寵物，旨在降低領養後的退養率。
 
 ---
+
+## 專案展示
+
+### 介紹影片
 [YouTube Video](https://youtube.com/shorts/PiXQjn4DSv8?feature=share)
+
+### 相關資源
+- [完整專案報告 (PDF)](https://github.com/mato1321/rimberio/blob/main/Rimberio%20%E5%AF%B5%E7%89%A9%E6%8E%A8%E8%96%A6%E7%B3%BB%E7%B5%B1.pdf)
+
+---
+
 
 ## 核心特色
 
