@@ -60,6 +60,7 @@ $$\text{維度分數} = \frac{\sum (答案值 \times 0.5)}{1.0} = \frac{\text{�
 
 **最終活動力分數 = (0.45 + 0.25) = 0.70**
 
+[YouTube Video](https://youtube.com/shorts/PiXQjn4DSv8?feature=share)
 ---
 
 ## 快速開始
